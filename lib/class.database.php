@@ -41,7 +41,12 @@ class DB {
   }
 
   public function get_fields($tablename) {
-    $query = $this->_db->query("PRAGMA table_info('poulets')");
+    $query = $this->_db->query("PRAGMA table_info('".$tablename."')");
+    return $query->fetchAll(PDO::FETCH_CLASS);
+  }
+
+  public function get_values($tablename) {
+    $query = $this->_db->query("SELECT * FROM ".$tablename."");
     return $query->fetchAll(PDO::FETCH_CLASS);
   }
 }
