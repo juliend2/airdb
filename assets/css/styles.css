@@ -1,0 +1,9 @@
+body {
+  font: 14px/1 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+.error {
+  background: #FF9E9E;
+  border: 2px solid #FF0808;
+  padding: 10px 15px;
+}
