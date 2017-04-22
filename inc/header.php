@@ -6,8 +6,13 @@
 <head class="">
   <meta charset="utf-8" />
   <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <script src="/assets/js/yconsole.js"></script>
+  <script>YConsole.show();YConsole.activate();</script>
   <script src="/assets/js/jquery-3.2.1.min.js"></script>
   <script src="/assets/js/lodash.min.js"></script>
+  <script src="/assets/js/react.js"></script>
+  <script src="/assets/js/react-dom.js"></script>
+  <script src="/assets/js/tables.js" type="text/jsx"></script>
   <script src="/assets/js/app.js"></script>
 </head>
 <body>
@@ -18,3 +23,4 @@
   </ul>
 </nav>
 <div class="main-container">
+<div id="container"></div>

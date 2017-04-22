@@ -26,4 +26,5 @@ foreach ($db->get_values($_GET['table']) as $key => $value) {
 }
 ?>
 </table>
+<a href="#">Add a Row</a>
 <?php include './inc/footer.php'; ?>
