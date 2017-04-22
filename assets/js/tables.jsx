@@ -1,3 +1,4 @@
+/*
 console.log('joie');
 window.Table = React.createComponent({
 	render: function(){
@@ -6,7 +7,7 @@ window.Table = React.createComponent({
 		);
 	}
 });
-/*
+*/
 class Table extends React.Component  {
 	constructor() {
 		super();
@@ -20,4 +21,3 @@ class Table extends React.Component  {
 		);
 	}
 }
-*/
