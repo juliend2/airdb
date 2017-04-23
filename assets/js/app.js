@@ -19,5 +19,5 @@ $(function(){
                           '</p>');
   });
 	console.log(window.Table);
-	ReactDOM.render(React.createElement(window.Table, null), $('#container')[0]);
+	// ReactDOM.render(React.createElement(window.Table, {tableName: 'Joie'}), $('#container')[0]);
 });

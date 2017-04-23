@@ -6,14 +6,14 @@
 <head class="">
   <meta charset="utf-8" />
   <link rel="stylesheet" href="/assets/css/styles.css"/>
-  <!--<script src="/assets/js/yconsole.js"></script>-->
+  <!--<script src="/assets/js/lib/yconsole.js"></script>-->
   <!--<script>YConsole.show();YConsole.activate();</script>-->
-  <script src="/assets/js/jquery-3.2.1.min.js"></script>
-  <script src="/assets/js/lodash.min.js"></script>
-  <script src="/assets/js/react.js"></script>
-  <script src="/assets/js/react-dom.js"></script>
-  <script src="/assets/js/browser.min.js"></script>
-  <script src="/assets/js/tables.js" type="text/babel"></script>
+  <script src="/assets/js/lib/jquery-3.2.1.min.js"></script>
+  <script src="/assets/js/lib/lodash.min.js"></script>
+  <script src="/assets/js/lib/react.js"></script>
+  <script src="/assets/js/lib/react-dom.js"></script>
+  <script src="/assets/js/lib/browser.min.js"></script>
+  <script src="/assets/js/tables.jsx" type="text/babel"></script>
   <script src="/assets/js/app.js" type="text/babel"></script>
 </head>
 <body>
@@ -24,4 +24,3 @@
   </ul>
 </nav>
 <div class="main-container">
-<div id="container"></div>
