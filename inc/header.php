@@ -5,6 +5,7 @@
 <!--<![endif]-->
 <head class="">
   <meta charset="utf-8" />
+  <title>Perso data</title>
   <link rel="stylesheet" href="/assets/css/styles.css"/>
   <!--<script src="/assets/js/lib/yconsole.js"></script>-->
   <!--<script>YConsole.show();YConsole.activate();</script>-->

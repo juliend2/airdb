@@ -19,4 +19,7 @@ body {
 .table td span {
   display: inline-block;
   line-height: 1.2rem;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

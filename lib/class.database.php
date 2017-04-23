@@ -35,6 +35,33 @@ class DB {
     $this->_sql .= 'ALTER TABLE '.$this->_tablename.' ADD COLUMN '.$field_name.' '.$field_type.';';
   }
 
+  public function add_row($tablename, $row_data) {
+    if ($row_data['id'] == '') {
+      unset($row_data['id']);
+    }
+    $values = array_values($row_data);
+    $keys = array_keys($row_data);
+    $key_symbols = array_map(function($key){
+        return ':'.$key;
+    }, $keys);
+    $sql = 'INSERT INTO '.$tablename.
+      ' ('.implode(', ', $keys).') '.
+      ' VALUES ('.
+      implode(', ', $key_symbols).')';
+    try {
+    $stmt = $this->_db->prepare($sql);
+    } catch (PDOException $e) {
+      print_r($row_data);
+      print_r($key_symbols);
+      print_r($sql);
+      die();
+    }
+    foreach ($key_symbols as $key=>$value) {
+      $stmt->bindParam($value, $values[$key]);
+    }
+    return $stmt->execute();
+  }
+
   public function get_tables() {
     $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence'");
     return $query->fetchAll(PDO::FETCH_COLUMN, 0);
