@@ -13,8 +13,11 @@ class Table extends React.Component {
     var row = {};
     _.each(this.state.tableColumns, (col)=>{
       row[col.name] = col.dflt_value;
-      // col.value = col.dflt_value;
-      // console.log('each', col);
+      if (col.name == 'id') {
+        if (this.state.tableRows.length > 0) {
+          row[col.name] = parseInt(this.state.tableRows[this.state.tableRows.length-1].id, 10) + 1;
+        }
+      }
     });
     this.setState({
       tableRows: this.state.tableRows.concat(row)
@@ -25,7 +28,7 @@ class Table extends React.Component {
     var i = 0;
     var j = 0;
     var k = 0;
-    console.log(this.state.tableRows);
+    // console.log(this.state.tableRows);
     return (
       <div>
         <h2>{this.state.tableName}</h2>
@@ -44,7 +47,7 @@ class Table extends React.Component {
               k += 1;
               return <tr key={k}>{this.state.tableColumns.map((col) => {
                 j += 1;
-                return <td key={j}><span>{row.value == null ? ' ' : row.value}</span></td>;
+                return <td key={j}><span>{row[col.name] == null ? ' ' : row[col.name]}</span></td>;
               })}</tr>;
             }.bind(this))}
           </tbody>
