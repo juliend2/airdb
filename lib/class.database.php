@@ -42,14 +42,14 @@ class DB {
     $values = array_values($row_data);
     $keys = array_keys($row_data);
     $key_symbols = array_map(function($key){
-        return ':'.$key;
+      return ':'.$key;
     }, $keys);
     $sql = 'INSERT INTO '.$tablename.
       ' ('.implode(', ', $keys).') '.
       ' VALUES ('.
       implode(', ', $key_symbols).')';
     try {
-    $stmt = $this->_db->prepare($sql);
+      $stmt = $this->_db->prepare($sql);
     } catch (PDOException $e) {
       print_r($row_data);
       print_r($key_symbols);
@@ -59,6 +59,36 @@ class DB {
     foreach ($key_symbols as $key=>$value) {
       $stmt->bindParam($value, $values[$key]);
     }
+    return $stmt->execute();
+  }
+
+  public function modify_row($tablename, $row_data) {
+    $id = $row_data['id'];
+    unset($row_data['id']);
+    $values = array_values($row_data);
+    $keys = array_keys($row_data);
+    $settings = [];
+    $key_symbols = array_map(function($key){
+      return ':'.$key;
+    }, $keys);
+    $settings = array_map(function($key){
+      return "$key = :$key";
+    }, $keys);
+    $sql = 'UPDATE  '.$tablename.
+           ' SET     '.implode(' , ', $settings).
+           ' WHERE   '.$tablename.'.id = :id';
+    try {
+      $stmt = $this->_db->prepare($sql);
+    } catch (PDOException $e) {
+      print_r($row_data);
+      print_r($key_symbols);
+      print_r($sql);
+      die();
+    }
+    foreach ($key_symbols as $key=>$value) {
+      $stmt->bindParam($value, $values[$key]);
+    }
+    $stmt->bindParam(':id', $id);
     return $stmt->execute();
   }
 
