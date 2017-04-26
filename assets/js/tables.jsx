@@ -6,7 +6,8 @@ class Table extends React.Component {
       tableName: this.props.tableName,
       tableRows: this.props.tableData,
       tableColumns: this.props.tableColumns,
-      editedCell: null
+      editedCell: null,
+      displayAddColumn: false
     };
   }
 
@@ -27,18 +28,15 @@ class Table extends React.Component {
   }
 
   handleInputModified(e) {
-    console.log('key up');
     var rowID = $(e.target).closest('td').data('rowid');
     var colName = $(e.target).closest('td').data('colname');
     var newValue = e.target.value;
     this.setState({
       tableRows: this.state.tableRows.map((row)=>{
         if (row.id == rowID) {
-          // console.log('if' , row);
           var modifiedRow = _.clone(row);
           modifiedRow[colName] = newValue;
           return modifiedRow;
-          // console.log('if', row, rowID, colName, modifiedRow);
           // return row;
         } else {
           return row;
@@ -52,7 +50,6 @@ class Table extends React.Component {
     $.post('/?action=ajax_add_row&table='+this.state.tableName, {
       row: this.state.tableRows[this.state.tableRows.length-1]
     }, (data, textStatus) => {
-      console.log('data', data);
     }.bind(this), 'json');
   }
 
@@ -60,7 +57,6 @@ class Table extends React.Component {
     e.preventDefault();
     var rowID = $(e.target).closest('td').data('rowid');
     var colName = $(e.target).closest('td').data('colname');
-    console.log('handleStartEditingCell', rowID, colName);
     this.setState({
       editedCell: {
         rowID: rowID,
@@ -76,8 +72,50 @@ class Table extends React.Component {
         return row.id == rowID;
       })
     }, (data, textStatus) => {
-      console.log('data', data);
+      this.setState({editedCell: null});
     }.bind(this), 'json');
+  }
+
+  handleDisplayAddColumn(e) {
+    e.preventDefault();
+    this.setState({
+      displayAddColumn: !this.state.displayAddColumn
+    });
+  }
+
+  handleAddColumn(e) {
+    e.preventDefault();
+    console.log('handleAddColumn');
+    var columnName = $(e.target).find('#column_name').val();
+    var columnType = $(e.target).find('#column_type').val();
+    $.post('/?action=ajax_add_column&table='+this.state.tableName, {
+      name: columnName,
+      type: columnType
+    }, (data, textStatus) => {
+      var currentColumns = this.state.tableColumns;
+      currentColumns.push({
+        cid: currentColumns[currentColumns.length - 1].cid + 1,
+        dflt_value: null,
+        name: columnName,
+        type: columnType,
+        pk: '0',
+        notnull: '0'
+      });
+      var newRows = _.map(this.state.tableRows, (row)=>{
+        row[columnName] = '';
+        return row;
+      });
+      this.setState({
+        displayAddColumn: false,
+        tableColumns: currentColumns,
+        tableRows: newRows
+      });
+    }.bind(this), 'json');
+  }
+
+  handleRemoveColumn(e) {
+    e.preventDefault();
+    console.log('handleRemoveColumn');
   }
 
   /*
@@ -87,20 +125,38 @@ class Table extends React.Component {
   */
 
   render() {
-    var i = 0;
     var j = 0;
     var k = 0;
-    // console.log(this.state.tableRows);
     return (
       <div>
         <h2>{this.state.tableName}</h2>
         <table className="table">
           <thead>
-            <tr>
-              {this.state.tableColumns.map((column) => {
-                i += 1;
+            <tr onClick={()=>{console.log(this.state);}.bind(this)}>
+              {_.map(this.state.tableColumns, (column, i) => {
                 return <th key={i}>{column.name}</th>;
               })}
+              <th id="add-column-th">
+                <a id="js-add-column" href="#" onClick={this.handleDisplayAddColumn.bind(this)}>Add a column</a>
+                <div id="js-add-column-box" style={{display: this.state.displayAddColumn ? 'block' : 'none'}}>
+                  <form action="#" method="post" onSubmit={this.handleAddColumn.bind(this)}>
+                  <p>
+                    <input type="text" id="column_name" name="name" placeholder="Name of the column" />
+                  </p>
+                  <p>
+                    <label htmlFor="column_type">Data Type:</label>
+                    <select name="type" id="column_type">
+                    {_.map(fieldTypes, (fieldType, index)=> {
+                      return <option value={fieldType.slug} key={index}>{fieldType.name}</option>;
+                    })}
+                    </select>
+                  </p>
+                  <p>
+                    <input type="submit" value="Add" />
+                  </p>
+                  </form>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -111,14 +167,12 @@ class Table extends React.Component {
                 j += 1;
                 return <td key={j} data-rowid={row['id']} data-colname={col.name}>{
                   ()=>{
-                    console.log(this.state.editedCell, col.name, row.id);
                     if (row[col.name] == null) {
                       return <span><input
                         type="text"
                         name={col.name}
                         onBlur={this.handleInputModified.bind(this)} /></span>;
                     } else if (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID) {
-                      console.log('hey');
                       return <span><input
                         type="text"
                         name={col.name}

@@ -1,12 +1,5 @@
-// var Table = require('./tables.js').Table;
 $(function(){
-  var fieldTypes = [
-   {name: 'Text', slug: 'text'},
-   {name: 'Float', slug: 'real'},
-   {name: 'Datetime', slug: 'datetime'},
-   {name: 'Integer', slug: 'int'}
-  ];
-
+  // debugger;
   $('#js-add-field').on('click', function(e) {
    e.preventDefault();
    $('#js-fields').append('<p>'+
@@ -18,5 +11,4 @@ $(function(){
                             '</select>'+
                           '</p>');
   });
-  console.log(window.Table);
 });

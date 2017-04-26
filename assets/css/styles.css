@@ -1,3 +1,6 @@
+/*
+ * gray: CCCCCC
+*/
 body {
   font: 14px/1 'Helvetica Neue', Helvetica, sans-serif;
 }
@@ -22,4 +25,22 @@ body {
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.table #add-column-th {
+  position: relative;
+  width: 200px;
+}
+.table #js-add-column-box {
+  position: absolute;
+  top: 1.2rem;
+  left: 0px;
+  background: white;
+  width: 100%;
+  border: 1px solid #CCCCCC;
+  text-align: left;
+  font-weight: normal;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 3px 5px;
 }

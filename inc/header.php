@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="/assets/css/styles.css"/>
   <!--<script src="/assets/js/lib/yconsole.js"></script>-->
   <!--<script>YConsole.show();YConsole.activate();</script>-->
+  <script>
+  </script>
+  <script src="/assets/js/constants.js"></script>
   <script src="/assets/js/lib/jquery-3.2.1.min.js"></script>
   <script src="/assets/js/lib/lodash.min.js"></script>
   <script src="/assets/js/lib/react.js"></script>

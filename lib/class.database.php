@@ -32,7 +32,12 @@ class DB {
     $this->_sql .= 'CREATE TABLE IF NOT EXISTS '.$this->_tablename.' (id INTEGER PRIMARY KEY AUTOINCREMENT);';
   }
 
-  public function add_field($field_name, $field_type) {
+  // just to set the table name
+  public function alter_table($table_name) {
+    $this->_tablename = $table_name;
+  }
+
+  public function add_column($field_name, $field_type) {
     $this->_sql .= 'ALTER TABLE '.$this->_tablename.' ADD COLUMN '.$field_name.' '.$field_type.';';
   }
 
