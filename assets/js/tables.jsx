@@ -85,7 +85,6 @@ class Table extends React.Component {
 
   handleAddColumn(e) {
     e.preventDefault();
-    console.log('handleAddColumn');
     var columnName = $(e.target).find('#column_name').val();
     var columnType = $(e.target).find('#column_type').val();
     $.post('/?action=ajax_add_column&table='+this.state.tableName, {
@@ -116,6 +115,25 @@ class Table extends React.Component {
   handleRemoveColumn(e) {
     e.preventDefault();
     console.log('handleRemoveColumn');
+    e.preventDefault();
+    var columnName = $(e.target).data('colname');
+    $.post('/?action=ajax_remove_column&table='+this.state.tableName, {
+      name: columnName
+    }, (data, textStatus) => {
+      console.log(data, textStatus);
+      var newColumns = _.reject(this.state.tableColumns, (column)=>{
+        return column.name == columnName;
+      });
+      var newRows = _.map(this.state.tableRows, (row)=>{
+        delete row[columnName];
+        return row;
+      });
+      this.setState({
+        displayAddColumn: false,
+        tableColumns: newColumns,
+        tableRows: newRows
+      });
+    }.bind(this), 'json');
   }
 
   /*
@@ -134,7 +152,10 @@ class Table extends React.Component {
           <thead>
             <tr onClick={()=>{console.log(this.state);}.bind(this)}>
               {_.map(this.state.tableColumns, (column, i) => {
-                return <th key={i}>{column.name}</th>;
+                return <th key={i}>
+                  {column.name}
+                  <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a>
+                  </th>;
               })}
               <th id="add-column-th">
                 <a id="js-add-column" href="#" onClick={this.handleDisplayAddColumn.bind(this)}>Add a column</a>
