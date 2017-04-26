@@ -42,10 +42,8 @@ class DB {
   }
 
   public function drop_column($table_name, $field_name) {
-    // $this->_sql .= 'ALTER TABLE '.$this->_tablename.' DROP COLUMN '.$field_name.';'; // NOT SUPPORTED IN sqlite3
     try {
       $old_fields = $this->get_fields($table_name);
-      // var_dump($old_fields);die;
       $new_fields = array_filter($old_fields, function($f) use ($field_name) {
         return $f->name != $field_name;
       });
@@ -54,7 +52,6 @@ class DB {
       }, $new_fields);
       $describe_sql = "SELECT sql FROM sqlite_master WHERE name = '".$table_name."' ;";
       $stmt = $this->_db->query($describe_sql);
-      // $stmt->bindParam(':tablename', $table_name);
       $query = $stmt->fetch();
       $old_query = $query['sql'];
       // having the , at the beginning is critical, because otherwise, we cannot remove the very last field of the table:
@@ -64,8 +61,6 @@ class DB {
       $this->_sql .= 'INSERT INTO '.$table_name.'__backup SELECT '.implode(', ', $new_field_names).' FROM '.$table_name.';';
       $this->_sql .= 'DROP TABLE '.$table_name.';';
       $this->_sql .= 'ALTER TABLE '.$table_name.'__backup RENAME TO '.$table_name.';';
-      // echo $this->_sql;
-      // die;
     } catch (PDOException $e) {
       print $e->getMessage();
       die;
