@@ -1,6 +1,7 @@
 <?php
 
 class DB {
+
   private $_db;
 
   private $_sql;
@@ -106,6 +107,5 @@ class DB {
     $query = $this->_db->query("SELECT * FROM ".$tablename."");
     return $query->fetchAll(PDO::FETCH_CLASS);
   }
+
 }
-
-

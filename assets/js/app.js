@@ -18,6 +18,5 @@ $(function(){
                             '</select>'+
                           '</p>');
   });
-	console.log(window.Table);
-	// ReactDOM.render(React.createElement(window.Table, {tableName: 'Joie'}), $('#container')[0]);
+  console.log(window.Table);
 });
