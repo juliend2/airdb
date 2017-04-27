@@ -22,9 +22,16 @@ class Table extends React.Component {
         }
       }
     });
+    console.log('row', row);
     this.setState({
       tableRows: this.state.tableRows.concat(row)
-    });
+    }, () => {
+      $.post('/?action=ajax_add_row&table='+this.state.tableName, {
+        row: this.state.tableRows[this.state.tableRows.length-1]
+      }, (data, textStatus) => {
+        console.log('data', data);
+      }.bind(this), 'json');
+    }.bind(this));
   }
 
   handleInputModified(e) {
@@ -41,16 +48,17 @@ class Table extends React.Component {
         } else {
           return row;
         }
-      })
+      }),
+      editedCell: null
+    }, () => {
+      $.post('/?action=ajax_edit_row&table='+this.state.tableName, {
+        row: _.find(this.state.tableRows, (row)=>{
+          return row.id == rowID;
+        })
+      }, (data, textStatus) => {
+        console.log('edit saved');
+      }.bind(this), 'json');
     });
-  }
-
-  handleCreateRow(e) {
-    e.preventDefault();
-    $.post('/?action=ajax_add_row&table='+this.state.tableName, {
-      row: this.state.tableRows[this.state.tableRows.length-1]
-    }, (data, textStatus) => {
-    }.bind(this), 'json');
   }
 
   handleStartEditingCell(e) {
@@ -63,17 +71,6 @@ class Table extends React.Component {
         colName: colName
       }
     });
-  }
-
-  handleEditInputBlur(e) {
-    var rowID = $(e.target).closest('td').data('rowid');
-    $.post('/?action=ajax_edit_row&table='+this.state.tableName, {
-      row: _.find(this.state.tableRows, (row)=>{
-        return row.id == rowID;
-      })
-    }, (data, textStatus) => {
-      this.setState({editedCell: null});
-    }.bind(this), 'json');
   }
 
   handleDisplayAddColumn(e) {
@@ -205,21 +202,13 @@ class Table extends React.Component {
                 j += 1;
                 return <td key={j} data-rowid={row.id} data-colname={col.name}>{
                   ()=>{
-                    if (row[col.name] == null) {
+                    if (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) {
                       // input field for adding first value to cell
                       return <span><input
                         type="text"
                         name={col.name}
-                        onBlur={this.handleInputModified.bind(this)} /></span>;
-
-                    } else if (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID) {
-                      // editing cell
-                      return <span><input
-                        type="text"
-                        name={col.name}
-                        onChange={this.handleInputModified.bind(this)}
-                        onBlur={this.handleEditInputBlur.bind(this)}
-                        value={row[col.name]} /></span>;
+                        onBlur={this.handleInputModified.bind(this)}
+                        defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} /></span>;
 
                     } else {
                       // display value
@@ -233,7 +222,7 @@ class Table extends React.Component {
             }.bind(this))}
           </tbody>
         </table>
-        <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a> | <a href="#" onClick={this.handleCreateRow.bind(this)}>Save the new row</a>
+        <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
       </div>
     );
   }

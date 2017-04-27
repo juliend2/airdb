@@ -87,6 +87,7 @@ class DB {
       ' ('.implode(', ', $keys).') '.
       ' VALUES ('.
       implode(', ', $key_symbols).')';
+    // print_r($sql);
     try {
       $stmt = $this->_db->prepare($sql);
     } catch (PDOException $e) {
