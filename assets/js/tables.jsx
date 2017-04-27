@@ -136,6 +136,23 @@ class Table extends React.Component {
     }.bind(this), 'json');
   }
 
+  handleRemoveRow(e) {
+    e.preventDefault();
+    if (confirm('Are you sure?')) {
+      var rowID = $(e.target).data('rowid');
+      $.post('/?action=ajax_remove_row&table='+this.state.tableName, {
+        row_id: rowID
+      }, (data)=>{
+        var newRows = _.reject(this.state.tableRows, (row)=>{
+          return row.id == rowID;
+        });
+        this.setState({
+          tableRows: newRows
+        });
+      }.bind(this), 'json');
+    }
+  }
+
   /*
    [
     {id: "1", nb_people: "4", place: "8312 rue Foucher", time: "2017-05-01 19:00"}
@@ -186,26 +203,33 @@ class Table extends React.Component {
               k += 1;
               return <tr key={k}>{this.state.tableColumns.map((col) => {
                 j += 1;
-                return <td key={j} data-rowid={row['id']} data-colname={col.name}>{
+                return <td key={j} data-rowid={row.id} data-colname={col.name}>{
                   ()=>{
                     if (row[col.name] == null) {
+                      // input field for adding first value to cell
                       return <span><input
                         type="text"
                         name={col.name}
                         onBlur={this.handleInputModified.bind(this)} /></span>;
+
                     } else if (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID) {
+                      // editing cell
                       return <span><input
                         type="text"
                         name={col.name}
                         onChange={this.handleInputModified.bind(this)}
                         onBlur={this.handleEditInputBlur.bind(this)}
                         value={row[col.name]} /></span>;
+
                     } else {
+                      // display value
                       return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
                     }
                   }.bind(this)()
                 }</td>;
-              }.bind(this))}</tr>;
+              }.bind(this))}
+              <td><a href="#" data-rowid={row.id} onClick={this.handleRemoveRow.bind(this)}>Delete</a></td>
+              </tr>;
             }.bind(this))}
           </tbody>
         </table>

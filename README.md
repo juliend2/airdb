@@ -2,7 +2,6 @@
 
 ## TODO
 
-* delete rows
 * reorder cells (for default view only)
 * reorder rows (maybe swap IDs in a transaction, or add an __ordering hidden field that contains it)
 * create views (with SQL)

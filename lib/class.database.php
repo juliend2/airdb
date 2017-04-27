@@ -68,6 +68,12 @@ class DB {
     return $query;
   }
 
+  public function delete_row($table_name, $row_id) {
+    $stmt = $this->_db->query('DELETE FROM '.$table_name.' WHERE id= :id ;');
+    $stmt->bindParam(":id", $row_id);
+    return $stmt->execute();
+  }
+
   public function add_row($tablename, $row_data) {
     if ($row_data['id'] == '') {
       unset($row_data['id']);
