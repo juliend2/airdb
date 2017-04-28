@@ -28,6 +28,9 @@ body {
   width: 100%;
   min-height: 1.2rem;
 }
+.table td span.datatype-datetime {
+  overflow: visible;
+}
 .table #add-column-th {
   position: relative;
   width: 200px;

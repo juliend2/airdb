@@ -6,6 +6,7 @@
 <head class="">
   <meta charset="utf-8" />
   <title>Perso data</title>
+  <link rel="stylesheet" href="/assets/css/lib/react-datetime.css"/>
   <link rel="stylesheet" href="/assets/css/styles.css"/>
   <!--<script src="/assets/js/lib/yconsole.js"></script>-->
   <!--<script>YConsole.show();YConsole.activate();</script>-->
@@ -13,9 +14,11 @@
   </script>
   <script src="/assets/js/constants.js"></script>
   <script src="/assets/js/lib/jquery-3.2.1.min.js"></script>
+  <script src="/assets/js/lib/moment-with-locales.min.js"></script>
   <script src="/assets/js/lib/lodash.min.js"></script>
   <script src="/assets/js/lib/react.js"></script>
   <script src="/assets/js/lib/react-dom.js"></script>
+  <script src="/assets/js/lib/react-datetime.js"></script>
   <script src="/assets/js/lib/browser.min.js"></script>
   <script src="/assets/js/tables.jsx" type="text/babel"></script>
   <script src="/assets/js/app.js" type="text/babel"></script>

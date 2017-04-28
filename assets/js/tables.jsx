@@ -22,7 +22,6 @@ class Table extends React.Component {
         }
       }
     });
-    console.log('row', row);
     this.setState({
       tableRows: this.state.tableRows.concat(row)
     }, () => {
@@ -35,9 +34,15 @@ class Table extends React.Component {
   }
 
   handleInputModified(e) {
-    var rowID = $(e.target).closest('td').data('rowid');
-    var colName = $(e.target).closest('td').data('colname');
-    var newValue = e.target.value;
+    if (e.hasOwnProperty('target')) { // normal input
+      var rowID = $(e.target).closest('td').data('rowid');
+      var colName = $(e.target).closest('td').data('colname');
+      var newValue = e.target.value;
+    } else { // datetime input
+      var rowID = this.state.currentRowID;
+      var colName = this.state.currentColName;
+      var newValue = e.format('YYYY-MM-DD HH:mm');
+    }
     this.setState({
       tableRows: this.state.tableRows.map((row)=>{
         if (row.id == rowID) {
@@ -111,13 +116,11 @@ class Table extends React.Component {
 
   handleRemoveColumn(e) {
     e.preventDefault();
-    console.log('handleRemoveColumn');
     e.preventDefault();
     var columnName = $(e.target).data('colname');
     $.post('/?action=ajax_remove_column&table='+this.state.tableName, {
       name: columnName
     }, (data, textStatus) => {
-      console.log(data, textStatus);
       var newColumns = _.reject(this.state.tableColumns, (column)=>{
         return column.name == columnName;
       });
@@ -204,11 +207,22 @@ class Table extends React.Component {
                   ()=>{
                     if (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) {
                       // input field for adding first value to cell
-                      return <span><input
-                        type="text"
-                        name={col.name}
-                        onBlur={this.handleInputModified.bind(this)}
-                        defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} /></span>;
+                      console.log('col.type', col.type);
+                      return <span className={"datatype-"+ col.type}>{
+                        col.type == 'datetime' ?
+                          <Datetime inputProps={{
+                              name: col.name,
+                              'data-rowid': row.id,
+                              'data-colname': col.name
+                            }} onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}.bind(this)} onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />
+                          :
+                          <input
+                            type="text"
+                            name={col.name}
+                            onBlur={this.handleInputModified.bind(this)}
+                            defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />
+                        }
+                        </span>;
 
                     } else {
                       // display value
