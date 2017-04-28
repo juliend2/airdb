@@ -10,7 +10,8 @@ $(function(){
   ReactDOM.render(React.createElement(window.Table, {
     tableName: '<?php echo $tablename ?>',
     tableData: tableData,
-    tableColumns: tableColumns
+    tableColumns: tableColumns,
+    isView: false
   }), $('#container')[0]);
 });
 

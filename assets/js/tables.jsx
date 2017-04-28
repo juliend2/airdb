@@ -7,7 +7,8 @@ class Table extends React.Component {
       tableRows: this.props.tableData,
       tableColumns: this.props.tableColumns,
       editedCell: null,
-      displayAddColumn: false
+      displayAddColumn: false,
+      isView: this.props.isView
     };
   }
 
@@ -173,7 +174,7 @@ class Table extends React.Component {
               {_.map(this.state.tableColumns, (column, i) => {
                 return <th key={i}>
                   {column.name}
-                  { column.name == 'id' ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a> }
+                  { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a> }
                   </th>;
               })}
               <th id="add-column-th">
