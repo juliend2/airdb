@@ -10,4 +10,13 @@
   }
 ?>
 </ul>
+<ul>
+<?php
+  foreach ($db->get_views() as $key => $value) {
+    echo '<li>';
+    echo '<a href="/?action=view_view&view='.$value.'">'.$value.'</a>';
+    echo '</li>';
+  }
+?>
+</ul>
 <?php include './inc/footer.php'; ?>

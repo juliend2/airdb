@@ -19,6 +19,8 @@ class Table extends React.Component {
       if (col.name == 'id') {
         if (this.state.tableRows.length > 0) {
           row[col.name] = parseInt(this.state.tableRows[this.state.tableRows.length-1] ? this.state.tableRows[this.state.tableRows.length-1].id : 1, 10) + 1;
+        } else {
+          row[col.name] = 1;
         }
       }
     });

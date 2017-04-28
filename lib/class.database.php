@@ -32,6 +32,16 @@ class DB {
     $this->_sql .= 'CREATE TABLE IF NOT EXISTS '.$this->_tablename.' (id INTEGER PRIMARY KEY AUTOINCREMENT);';
   }
 
+  public function create_view($view_name, $select_sql) {
+    $sql = "CREATE VIEW $view_name AS $select_sql;";
+    return $this->_db->exec($sql);
+  }
+
+  public function update_view($view_name, $sql) {
+    $sql = "begin; DROP VIEW IF EXISTS $view_name; CREATE VIEW $view_name AS $sql; commit;";
+    return $this->_db->exec($sql);
+  }
+
   // just to set the table name
   public function alter_table($table_name) {
     $this->_tablename = $table_name;
@@ -87,7 +97,7 @@ class DB {
       ' ('.implode(', ', $keys).') '.
       ' VALUES ('.
       implode(', ', $key_symbols).')';
-    // print_r($sql);
+    print_r($sql);
     try {
       $stmt = $this->_db->prepare($sql);
     } catch (PDOException $e) {
@@ -135,6 +145,21 @@ class DB {
   public function get_tables() {
     $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence'");
     return $query->fetchAll(PDO::FETCH_COLUMN, 0);
+  }
+
+  public function get_views() {
+    $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='view' AND name != 'sqlite_sequence'");
+    return $query->fetchAll(PDO::FETCH_COLUMN, 0);
+  }
+
+  public function get_view_sql($view_name) {
+    $describe_sql = "SELECT sql FROM sqlite_master WHERE name = '".$view_name."' ;";
+    $stmt = $this->_db->query($describe_sql);
+    $query = $stmt->fetch();
+    $sql = $query['sql'];
+    $SQLs = explode('AS', $sql);
+    $select = $SQLs[1];
+    return $select;
   }
 
   public function get_fields($tablename) {
