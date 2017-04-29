@@ -42,7 +42,7 @@ $(function(){
       <dt><a href="/?action=view_table&table=<?php echo $table_name ?>"><?php echo $table_name ?></a></dt>
       <dd>
         <?php echo implode(' , ', array_map(function($field){
-          return '<b>'.$field->name.'</b>';
+          return '<b>'.$field->name.'</b> ('.$field->type.')';
         }, $db->get_fields($table_name))) ?>
       </dd>
     <?php endforeach; ?>

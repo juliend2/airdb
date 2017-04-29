@@ -201,21 +201,32 @@ class Table extends React.Component {
    ]
   */
 
+  validateName(name) {
+    if (/^\d/.test(name)) {
+      return "The column name cannot start with a number.";
+    } else if (/\W/.test(name)) {
+      return "The column name can only contain letters, numbers and underscores.";
+    } else {
+      return false;
+    }
+  }
+
+  validateInteger(integer) {
+    if (/\D/.test(integer)) {
+      return "An integer field can only only contain digits.";
+    }
+  }
+
+  validateFloat(float) {
+    if (/^\D/.test(float)) {
+    }
+  }
+
   handleNewColumnNameChange(e) {
     var value = e.target.value;
-    if (/^\d/.test(value)) {
-      this.setState({
-        newColumnNameError: "The column name cannot start with a number."
-      });
-    } else if (/\W/.test(value)) {
-      this.setState({
-        newColumnNameError: "The column name cannot contain only contain letters, numbers and underscores."
-      });
-    } else {
-      this.setState({
-        newColumnNameError: false
-      });
-    }
+    this.setState({
+      newColumnNameError: this.validateName(value)
+    });
     this.setState({newColumnName: value});
   }
 
