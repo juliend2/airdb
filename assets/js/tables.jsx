@@ -118,8 +118,13 @@ class Table extends React.Component {
   handleDisplayAddColumn(e) {
     e.preventDefault();
     this.setState({
-      displayAddColumn: !this.state.displayAddColumn
-    });
+      displayAddColumn: !this.state.displayAddColumn,
+      newColumnName: ''
+    }, ()=>{
+      if (this.state.displayAddColumn) {
+        this.refs.fieldname.focus();
+      }
+    }.bind(this));
   }
 
   handleAddColumn(e) {
@@ -196,6 +201,24 @@ class Table extends React.Component {
    ]
   */
 
+  handleNewColumnNameChange(e) {
+    var value = e.target.value;
+    if (/^\d/.test(value)) {
+      this.setState({
+        newColumnNameError: "The column name cannot start with a number."
+      });
+    } else if (/\W/.test(value)) {
+      this.setState({
+        newColumnNameError: "The column name cannot contain only contain letters, numbers and underscores."
+      });
+    } else {
+      this.setState({
+        newColumnNameError: false
+      });
+    }
+    this.setState({newColumnName: value});
+  }
+
   render() {
     var j = 0;
     var k = 0;
@@ -216,7 +239,20 @@ class Table extends React.Component {
                 <div id="js-add-column-box" style={{display: this.state.displayAddColumn ? 'block' : 'none'}}>
                   <form action="#" method="post" onSubmit={this.handleAddColumn.bind(this)}>
                   <p>
-                    <input type="text" id="column_name" name="name" placeholder="Name of the column" />
+                    <input
+                      type="text"
+                      id="column_name"
+                      name="name"
+                      onChange={this.handleNewColumnNameChange.bind(this)}
+                      value={this.state.newColumnName}
+                      ref='fieldname'
+                      placeholder="Name of the column" />
+                    <span className={((fields)=>{
+                                      fields.push(this.state.newColumnNameError ? 'block' : 'hidden');
+                                      return fields.join(' ');
+                                    })(['error'])}>
+                      {this.state.newColumnNameError}
+                    </span>
                   </p>
                   <p>
                     <label htmlFor="column_type">Data Type:</label>

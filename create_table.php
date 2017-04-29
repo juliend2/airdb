@@ -15,9 +15,6 @@ include './inc/header.php';
 <h1>Create a table</h1>
 <form method="post" action="">
   <p><label for="tablename">Table name:</label><input type="text" name="table_name" id="tablename" /></p>
-  <fieldset id="js-fields">
-  </fieldset>
-  <p><a href="#" id="js-add-field">Add a field</a></p>
   <p><input type="submit"/></p>
 </form>
 <?php include './inc/footer.php'; ?>

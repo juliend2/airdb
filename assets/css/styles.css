@@ -10,6 +10,12 @@ body {
   border: 2px solid #FF0808;
   padding: 10px 15px;
 }
+.block {
+  display: block;
+}
+.hidden {
+  display: none;
+}
 
 .table {
   border: 1px solid #ccc;
