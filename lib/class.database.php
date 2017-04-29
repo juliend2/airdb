@@ -157,7 +157,7 @@ class DB {
     $stmt = $this->_db->query($describe_sql);
     $query = $stmt->fetch();
     $sql = $query['sql'];
-    $SQLs = explode('AS', $sql);
+    $SQLs = explode('AS', $sql, 2);
     $select = $SQLs[1];
     return $select;
   }
