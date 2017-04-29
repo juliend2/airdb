@@ -9,9 +9,9 @@ if (isset($_POST) && isset($_POST['view_name'])) {
 }
 ?>
 <?php include './inc/header.php'; ?>
-<h1>Tables</h1>
-<script>
 <?php $tablename = $_GET['view']; ?>
+<h1>Views</h1>
+<script>
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
 var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
 

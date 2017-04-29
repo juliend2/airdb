@@ -239,7 +239,10 @@ class Table extends React.Component {
             }.bind(this))}
           </tbody>
         </table>
-        <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
+        {this.state.isView ?
+          <span></span> :
+          <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
+        }
       </div>
     );
   }
