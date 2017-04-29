@@ -39,7 +39,7 @@ $(function(){
     <h3>Fields of other tables</h3>
     <dl>
     <?php foreach ($db->get_tables() as $key => $table_name): ?>
-      <dt><?php echo $table_name ?></dt>
+      <dt><a href="/?action=view_table&table=<?php echo $table_name ?>"><?php echo $table_name ?></a></dt>
       <dd>
         <?php echo implode(' , ', array_map(function($field){
           return '<b>'.$field->name.'</b>';
