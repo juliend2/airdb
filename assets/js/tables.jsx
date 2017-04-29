@@ -69,6 +69,40 @@ class Table extends React.Component {
     });
   }
 
+  handleBooleanChange(e) {
+    var rowID = $(e.target).closest('td').data('rowid');
+    var colName = $(e.target).closest('td').data('colname');
+    var newValue = (e.target.value == 'on' ? 1 : 0);
+    var newValue = newValue ? 0 : 1; // invert
+    this.setState({
+      tableRows: this.state.tableRows.map((row)=>{
+        if (row.id == rowID) {
+          var modifiedRow = _.clone(row);
+          if (parseInt(modifiedRow[colName], 10) === newValue && typeof modifiedRow[colName] === 'string') {
+            if (newValue == 1) {
+              newValue = 0;
+            } else {
+              newValue = 1;
+            }
+          }
+          modifiedRow[colName] = newValue;
+          return modifiedRow;
+        } else {
+          return row;
+        }
+      }),
+      editedCell: null
+    }, () => {
+      $.post('/?action=ajax_edit_row&table='+this.state.tableName, {
+        row: _.find(this.state.tableRows, (row)=>{
+          return row.id == rowID;
+        })
+      }, (data, textStatus) => {
+        // console.log('edit saved');
+      }.bind(this), 'json');
+    });
+  }
+
   handleStartEditingCell(e) {
     e.preventDefault();
     var rowID = $(e.target).closest('td').data('rowid');
@@ -208,28 +242,46 @@ class Table extends React.Component {
                 j += 1;
                 return <td key={j} data-rowid={row.id} data-colname={col.name}>{
                   ()=>{
-                    if (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) {
+                    if (
+                      (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) && col.type != 'bool'
+                    ) {
                       // input field for adding first value to cell
-                      console.log('col.type', col.type);
                       return <span className={"datatype-"+ col.type}>{
-                        col.type == 'datetime' ?
-                          <Datetime inputProps={{
-                              name: col.name,
-                              'data-rowid': row.id,
-                              'data-colname': col.name
-                            }} onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}.bind(this)} onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />
-                          :
-                          <input
-                            type="text"
-                            name={col.name}
-                            onBlur={this.handleInputModified.bind(this)}
-                            defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />
+                          (function(colType) {
+                            switch (colType) {
+                              case 'datetime':
+                                return <Datetime
+                                  inputProps={{
+                                    name: col.name,
+                                    'data-rowid': row.id,
+                                    'data-colname': col.name
+                                  }}
+                                  onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}.bind(this)}
+                                  onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />;
+                              default:
+                                return <input
+                                  type="text"
+                                  name={col.name}
+                                  onBlur={this.handleInputModified.bind(this)}
+                                  defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />;
+                            }
+                          }.bind(this))(col.type)
                         }
                         </span>;
 
                     } else {
                       // display value
-                      return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                      if (col.type == 'bool') {
+                        return <input
+                          type="checkbox"
+                          name={col.name}
+                          value={row[col.name] ? 'on' : 'off'}
+                          checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
+                          onChange={this.handleBooleanChange.bind(this)}
+                          />;
+                      } else {
+                        return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                      }
                     }
                   }.bind(this)()
                 }</td>;
