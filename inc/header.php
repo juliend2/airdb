@@ -1,3 +1,17 @@
+<?php
+if (isset($_SESSION['success'])) {
+  $success = $_SESSION['success'];
+  unset($_SESSION['success']);
+}
+if (isset($_SESSION['failure'])) {
+  $failure = $_SESSION['failure'];
+  unset($_SESSION['failure']);
+}
+if (isset($_SESSION['REAL_REFERER'])) {
+  $referer = $_SESSION['REAL_REFERER'];
+  unset($_SESSION['REAL_REFERER']);
+}
+?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="no-js lt-ie9" xmlns:fb="http://ogp.me/ns/fb#" xml:lang="fr-CA" lang="fr-CA" > <![endif]-->
 <!--[if gt IE 8]><!-->

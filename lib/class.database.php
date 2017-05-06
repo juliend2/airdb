@@ -51,6 +51,14 @@ class DB {
     $this->_sql .= 'ALTER TABLE '.$this->_tablename.' ADD COLUMN '.$field_name.' '.$field_type.';';
   }
 
+  public function drop_table($table_name) {
+    $this->_sql .= 'DROP TABLE '.$table_name.';';
+  }
+
+  public function drop_view($table_name) {
+    $this->_sql .= 'DROP VIEW '.$table_name.';';
+  }
+
   public function drop_column($table_name, $field_name) {
     try {
       $old_fields = $this->get_fields($table_name);

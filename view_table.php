@@ -13,8 +13,7 @@ $(function(){
     tableData: tableData,
     tableColumns: tableColumns,
     isView: false
-  }), $('#container')[0]);
-  console.log($('#container').length);
+  }), document.getElementById('container'));
 });
 
 </script>

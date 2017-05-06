@@ -74,33 +74,35 @@ class Table extends React.Component {
     var colName = $(e.target).closest('td').data('colname');
     var newValue = (e.target.value == 'on' ? 1 : 0);
     var newValue = newValue ? 0 : 1; // invert
-    this.setState({
-      tableRows: this.state.tableRows.map((row)=>{
-        if (row.id == rowID) {
-          var modifiedRow = _.clone(row);
-          if (parseInt(modifiedRow[colName], 10) === newValue && typeof modifiedRow[colName] === 'string') {
-            if (newValue == 1) {
-              newValue = 0;
-            } else {
-              newValue = 1;
+    if (!this.state.isView) {
+      this.setState({
+        tableRows: this.state.tableRows.map((row)=>{
+          if (row.id == rowID) {
+            var modifiedRow = _.clone(row);
+            if (parseInt(modifiedRow[colName], 10) === newValue && typeof modifiedRow[colName] === 'string') {
+              if (newValue == 1) {
+                newValue = 0;
+              } else {
+                newValue = 1;
+              }
             }
+            modifiedRow[colName] = newValue;
+            return modifiedRow;
+          } else {
+            return row;
           }
-          modifiedRow[colName] = newValue;
-          return modifiedRow;
-        } else {
-          return row;
-        }
-      }),
-      editedCell: null
-    }, () => {
-      $.post('/?action=ajax_edit_row&table='+this.state.tableName, {
-        row: _.find(this.state.tableRows, (row)=>{
-          return row.id == rowID;
-        })
-      }, (data, textStatus) => {
-        // console.log('edit saved');
-      }.bind(this), 'json');
-    });
+        }),
+        editedCell: null
+      }, () => {
+        $.post('/?action=ajax_edit_row&table='+this.state.tableName, {
+          row: _.find(this.state.tableRows, (row)=>{
+            return row.id == rowID;
+          })
+        }, (data, textStatus) => {
+          // console.log('edit saved');
+        }.bind(this), 'json');
+      });
+    }
   }
 
   handleStartEditingCell(e) {
@@ -325,6 +327,7 @@ class Table extends React.Component {
                           value={row[col.name] ? 'on' : 'off'}
                           checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
                           onChange={this.handleBooleanChange.bind(this)}
+                          disabled={this.state.isView}
                           />;
                       } else {
                         return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;

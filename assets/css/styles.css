@@ -6,6 +6,12 @@ body {
   margin: 1rem 2rem;
 }
 
+.success {
+  background: #D1FFEA;
+  border: 2px solid #74AB92;
+  padding: 10px 15px;
+}
+.failure,
 .error {
   background: #FF9E9E;
   border: 2px solid #FF0808;

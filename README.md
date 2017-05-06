@@ -2,7 +2,6 @@
 
 ## TODO
 
-* delete tables
 * modify table name
 * add validation for integer type
 * add validation for float type
