@@ -1,0 +1,116 @@
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+time {
+  display: inline;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-y: scroll;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+}
+
+ul, ol, dl {
+  margin: 0;
+}
+
+nav ul, ol.breadbrumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.group:after, body:after, .template-text .wrap.text .content:after, .template-text .wrap.text .featuring-slider-content:after, .section-home .wrap.navigation .content:after, .section-home .wrap.navigation .featuring-slider-content:after, .section-choice .wrap.choices .content:after, .section-choice .wrap.choices .featuring-slider-content:after, .section-choice .wrap.choices .content .choice-block:after, .section-choice .wrap.choices .featuring-slider-content .choice-block:after, .wrap.form-blocks .content:after, .wrap.form-blocks .featuring-slider-content:after, .form-blocks .content:after, .form-blocks .featuring-slider-content:after, .wrap.form-blocks .content .image-profil-wrap:after, .wrap.form-blocks .featuring-slider-content .image-profil-wrap:after, .form-blocks .content .image-profil-wrap:after, .form-blocks .featuring-slider-content .image-profil-wrap:after, .wrap.form-blocks .content .block-question:after, .wrap.form-blocks .featuring-slider-content .block-question:after, .form-blocks .content .block-question:after, .form-blocks .featuring-slider-content .block-question:after, .wrap.form-blocks .content .block-faq:after, .wrap.form-blocks .featuring-slider-content .block-faq:after, .form-blocks .content .block-faq:after, .form-blocks .featuring-slider-content .block-faq:after, .wrap.form-blocks .content .block-palier:after, .wrap.form-blocks .featuring-slider-content .block-palier:after, .form-blocks .content .block-palier:after, .form-blocks .featuring-slider-content .block-palier:after, .wrap.form-blocks .content .block-image:after, .wrap.form-blocks .featuring-slider-content .block-image:after, .wrap.form-blocks .content .block-video:after, .wrap.form-blocks .featuring-slider-content .block-video:after, .wrap.form-blocks .content .block-gallerie:after, .wrap.form-blocks .featuring-slider-content .block-gallerie:after, .wrap.form-blocks .content .block-videos:after, .wrap.form-blocks .featuring-slider-content .block-videos:after, .form-blocks .content .block-image:after, .form-blocks .featuring-slider-content .block-image:after, .form-blocks .content .block-video:after, .form-blocks .featuring-slider-content .block-video:after, .form-blocks .content .block-gallerie:after, .form-blocks .featuring-slider-content .block-gallerie:after, .form-blocks .content .block-videos:after, .form-blocks .featuring-slider-content .block-videos:after, .col-right:after, .col-left:after, .section-create-account .form-blocks form .col-left:after, .section-create-account .form-blocks form .col-right:after, .section-create-account .form-blocks form > fieldset:after, .project-title:after, .project-body:after, .project-body .people .creator:after, .project-body .people .project-tags:after, .project-body .people .contributions:after, .project-body .project:after, .project-body .project .share:after, .resume-projects:after, .template-explore .wrap.explore:after, .section-support .form-blocks .col-reward label > li:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.group, body, .template-text .wrap.text .content, .template-text .wrap.text .featuring-slider-content, .section-home .wrap.navigation .content, .section-home .wrap.navigation .featuring-slider-content, .section-choice .wrap.choices .content, .section-choice .wrap.choices .featuring-slider-content, .section-choice .wrap.choices .content .choice-block, .section-choice .wrap.choices .featuring-slider-content .choice-block, .wrap.form-blocks .content, .wrap.form-blocks .featuring-slider-content, .form-blocks .content, .form-blocks .featuring-slider-content, .wrap.form-blocks .content .image-profil-wrap, .wrap.form-blocks .featuring-slider-content .image-profil-wrap, .form-blocks .content .image-profil-wrap, .form-blocks .featuring-slider-content .image-profil-wrap, .wrap.form-blocks .content .block-question, .wrap.form-blocks .featuring-slider-content .block-question, .form-blocks .content .block-question, .form-blocks .featuring-slider-content .block-question, .wrap.form-blocks .content .block-faq, .wrap.form-blocks .featuring-slider-content .block-faq, .form-blocks .content .block-faq, .form-blocks .featuring-slider-content .block-faq, .wrap.form-blocks .content .block-palier, .wrap.form-blocks .featuring-slider-content .block-palier, .form-blocks .content .block-palier, .form-blocks .featuring-slider-content .block-palier, .wrap.form-blocks .content .block-image, .wrap.form-blocks .featuring-slider-content .block-image, .wrap.form-blocks .content .block-video, .wrap.form-blocks .featuring-slider-content .block-video, .wrap.form-blocks .content .block-gallerie, .wrap.form-blocks .featuring-slider-content .block-gallerie, .wrap.form-blocks .content .block-videos, .wrap.form-blocks .featuring-slider-content .block-videos, .form-blocks .content .block-image, .form-blocks .featuring-slider-content .block-image, .form-blocks .content .block-video, .form-blocks .featuring-slider-content .block-video, .form-blocks .content .block-gallerie, .form-blocks .featuring-slider-content .block-gallerie, .form-blocks .content .block-videos, .form-blocks .featuring-slider-content .block-videos, .col-right, .col-left, .section-create-account .form-blocks form .col-left, .section-create-account .form-blocks form .col-right, .section-create-account .form-blocks form > fieldset, .project-title, .project-body, .project-body .people .creator, .project-body .people .project-tags, .project-body .people .contributions, .project-body .project, .project-body .project .share, .resume-projects, .template-explore .wrap.explore, .section-support .form-blocks .col-reward label > li {
+  zoom: 1;
+}
+
+a *, button * {
+  cursor: pointer;
+}
+
+a img {
+  border: 0;
+}
+
+hr {
+  display: none;
+}
+
+small {
+  font-size: 90%;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+sup, sub {
+  height: 0;
+  line-height: 1;
+  vertical-align: baseline;
+  _vertical-align: bottom;
+  position: relative;
+  font-size: 75%;
+}
+
+sup {
+  bottom: 1ex;
+}
+
+sub {
+  top: .5ex;
+}
+
+span.amp {
+  font-family: "Bree Serif", serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 1.2em;
+  line-height: 0.8;
+}
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help;
+}
+
+button, input[type="submit"], input[type="button"], * html input {
+  width: auto;
+  overflow: visible;
+}
+
+button, label, select, option, input[type=submit], input[type=button] {
+  cursor: pointer;
+}
+
+button {
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 1px;
+}
+
+input {
+  margin: 0;
+}

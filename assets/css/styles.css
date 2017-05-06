@@ -3,6 +3,7 @@
 */
 body {
   font: 14px/1 'Helvetica Neue', Helvetica, sans-serif;
+  margin: 1rem 2rem;
 }
 
 .error {
@@ -15,6 +16,27 @@ body {
 }
 .hidden {
   display: none;
+}
+
+.nav {
+  float: left;
+  margin-bottom: 3rem;
+  clear: both;
+  width: 100%;
+}
+.nav li {
+  float: left;
+  margin-right: 2px;
+}
+.nav li a {
+  color: black;
+  display: inline-block;
+  line-height: 3rem;
+  background: #aaa;
+  padding: 0 1rem;
+}
+.nav li a:hover {
+  background: yellow;
 }
 
 .table {

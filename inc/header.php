@@ -6,6 +6,7 @@
 <head class="">
   <meta charset="utf-8" />
   <title>Perso data</title>
+  <link rel="stylesheet" href="/assets/css/lib/reset.css"/>
   <link rel="stylesheet" href="/assets/css/lib/react-datetime.css"/>
   <link rel="stylesheet" href="/assets/css/styles.css"/>
   <!--<script src="/assets/js/lib/yconsole.js"></script>-->
@@ -25,7 +26,7 @@
 </head>
 <body>
 <nav>
-  <ul>
+  <ul class="nav">
     <li><a href="/?action=create_table">Create a Table</a>
     <li><a href="/?action=create_view">Create a View</a>
     <li><a href="/?action=tables">List Tables & views</a>
