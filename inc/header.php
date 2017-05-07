@@ -1,15 +1,15 @@
 <?php
-if (isset($_SESSION['success'])) {
-  $success = $_SESSION['success'];
-  unset($_SESSION['success']);
+if (isset($_COOKIE['success'])) {
+  $success = $_COOKIE['success'];
+  unset($_COOKIE['success']);
 }
-if (isset($_SESSION['failure'])) {
-  $failure = $_SESSION['failure'];
-  unset($_SESSION['failure']);
+if (isset($_COOKIE['failure'])) {
+  $failure = $_COOKIE['failure'];
+  unset($_COOKIE['failure']);
 }
-if (isset($_SESSION['REAL_REFERER'])) {
-  $referer = $_SESSION['REAL_REFERER'];
-  unset($_SESSION['REAL_REFERER']);
+if (isset($_COOKIE['REAL_REFERER'])) {
+  $referer = $_COOKIE['REAL_REFERER'];
+  unset($_COOKIE['REAL_REFERER']);
 }
 ?>
 <!DOCTYPE html>
