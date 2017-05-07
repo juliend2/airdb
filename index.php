@@ -7,5 +7,5 @@ date_default_timezone_set('UTC');
 if (isset($_GET) && isset($_GET['action'])) {
   require './'.$_GET['action'].'.php';
 } else {
-  require './home.php';
+  require './tables.php';
 }

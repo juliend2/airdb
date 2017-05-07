@@ -41,9 +41,9 @@ if (isset($_COOKIE['REAL_REFERER'])) {
 <body>
 <nav>
   <ul class="nav">
+    <li><a href="/?action=tables">List Tables & views</a>
     <li><a href="/?action=create_table">Create a Table</a>
     <li><a href="/?action=create_view">Create a View</a>
-    <li><a href="/?action=tables">List Tables & views</a>
   </ul>
 </nav>
 <div class="main-container">
