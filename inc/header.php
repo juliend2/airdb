@@ -35,7 +35,6 @@ if (isset($_COOKIE['REAL_REFERER'])) {
   <script src="/assets/js/lib/react-dom.js"></script>
   <script src="/assets/js/lib/react-datetime.js"></script>
   <script src="/assets/js/lib/browser.min.js"></script>
-  <script src="/assets/js/tables.jsx" type="text/babel"></script>
   <script src="/assets/js/app.js" type="text/babel"></script>
 </head>
 <body>

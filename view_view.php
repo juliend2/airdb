@@ -11,7 +11,9 @@ if (isset($_POST) && isset($_POST['view_name'])) {
 <?php include './inc/header.php'; ?>
 <?php $tablename = $_GET['view']; ?>
 <h1>Views</h1>
-<script>
+<div id="container"></div>
+<script src="/assets/js/tables.jsx" type="text/babel"></script>
+<script type="text/babel">
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
 var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
 
@@ -25,7 +27,6 @@ $(function(){
 });
 
 </script>
-<div id="container"></div>
 
 <h2>Modify this view</h2>
 <p><?php if (isset($_SESSION['success'])) { echo $_SESSION['success']; } ?></p>

@@ -31,7 +31,7 @@ class Table extends React.Component {
       $.post('/?action=ajax_add_row&table='+this.state.tableName, {
         row: this.state.tableRows[this.state.tableRows.length-1]
       }, (data, textStatus) => {
-        console.log('data', data);
+        // console.log('data', data);
       }.bind(this), 'json');
     }.bind(this));
   }
@@ -64,7 +64,7 @@ class Table extends React.Component {
           return row.id == rowID;
         })
       }, (data, textStatus) => {
-        console.log('edit saved');
+        // console.log('edit saved');
       }.bind(this), 'json');
     });
   }
@@ -240,7 +240,7 @@ class Table extends React.Component {
         <h2>{this.state.tableName}</h2>
         <table className="table">
           <thead>
-            <tr onClick={()=>{console.log(this.state);}.bind(this)}>
+            <tr onClick={()=>{/*console.log(this.state);*/}.bind(this)}>
               {_.map(this.state.tableColumns, (column, i) => {
                 return <th key={i}>
                   {column.name}

@@ -2,7 +2,8 @@
 <?php include './inc/header.php'; ?>
 <h1>Tables</h1>
 <div id="container"></div>
-<script>
+<script src="/assets/js/tables.jsx" type="text/babel"></script>
+<script type="text/babel">
 <?php $tablename = $_GET['table']; ?>
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
 var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
