@@ -151,12 +151,12 @@ class DB {
   }
 
   public function get_tables() {
-    $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence'");
+    $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence' ORDER BY name ASC");
     return $query->fetchAll(PDO::FETCH_COLUMN, 0);
   }
 
   public function get_views() {
-    $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='view' AND name != 'sqlite_sequence'");
+    $query = $this->_db->query("SELECT name FROM sqlite_master WHERE type='view' AND name != 'sqlite_sequence' ORDER BY name ASC");
     return $query->fetchAll(PDO::FETCH_COLUMN, 0);
   }
 
