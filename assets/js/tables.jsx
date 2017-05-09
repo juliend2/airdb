@@ -7,6 +7,8 @@ class Table extends React.Component {
       tableRows: this.props.tableData,
       tableColumns: this.props.tableColumns,
       editedCell: null,
+      editingRow: null,
+      editingCol: null,
       displayAddColumn: false,
       isView: this.props.isView
     };
@@ -160,7 +162,6 @@ class Table extends React.Component {
 
   handleRemoveColumn(e) {
     e.preventDefault();
-    e.preventDefault();
     var columnName = $(e.target).data('colname');
     $.post('/?action=ajax_remove_column&table='+this.state.tableName, {
       name: columnName
@@ -178,6 +179,43 @@ class Table extends React.Component {
         tableRows: newRows
       });
     }.bind(this), 'json');
+  }
+
+  handleStartEditingColumn(e) {
+    e.preventDefault();
+    var columnName = $(e.target).data('colname');
+    // console.log('columnName', columnName);
+    this.setState({editingCol: columnName}, (row) => {
+      // console.log('row', row, this.state.editingCol);
+    }.bind(this));
+  }
+
+  handleStopEditingColumn(e) {
+    e.preventDefault();
+    var editingCol = this.state.editingCol;
+    // console.log('editingCol', editingCol);
+    var newColumnName = $(e.target).val();
+    this.setState({editingCol: null}, (row) => {
+      $.post('/?action=ajax_edit_col&table='+this.state.tableName, {
+        column_name: editingCol,
+        new_column_name: newColumnName
+      }, (data)=>{
+        var newColumns = _.map(this.state.tableColumns, (column)=>{
+          column.name = (column.name == editingCol) ? newColumnName : column.name;
+          return column;
+        });
+        var newRows = _.map(this.state.tableRows, (row)=>{
+          row[newColumnName] = row[editingCol];
+          delete row[editingCol];
+          return row;
+        });
+        this.setState({
+          tableColumns: newColumns,
+          tableRows: newRows,
+          editingCol: null
+        });
+      }.bind(this), 'json');
+    }.bind(this));
   }
 
   handleRemoveRow(e) {
@@ -243,7 +281,8 @@ class Table extends React.Component {
             <tr onClick={()=>{/*console.log(this.state);*/}.bind(this)}>
               {_.map(this.state.tableColumns, (column, i) => {
                 return <th key={i}>
-                  {column.name}
+                  { column.name == this.state.editingCol ? <input type="text" name="rowname" onBlur={this.handleStopEditingColumn.bind(this)} defaultValue={column.name}/> : column.name}
+                  { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleStartEditingColumn.bind(this)}>✎</a>}
                   { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a> }
                   </th>;
               })}

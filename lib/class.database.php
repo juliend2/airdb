@@ -105,7 +105,7 @@ class DB {
       ' ('.implode(', ', $keys).') '.
       ' VALUES ('.
       implode(', ', $key_symbols).')';
-    print_r($sql);
+    // print_r($sql);
     try {
       $stmt = $this->_db->prepare($sql);
     } catch (PDOException $e) {
@@ -148,6 +148,33 @@ class DB {
     }
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
+  }
+
+  public function modify_column($table_name, $field_name, $new_field_name) {
+    try {
+      $old_fields = $this->get_fields($table_name);
+      $new_field_names = array_map(function($f) use ($field_name, $new_field_name) {
+        return $f->name == $field_name ? $new_field_name : $f->name;
+      }, $old_fields);
+      // get the create table SQL:
+      $describe_sql = "SELECT sql FROM sqlite_master WHERE name = '".$table_name."' ;";
+      $stmt = $this->_db->query($describe_sql);
+      $query = $stmt->fetch();
+      $old_query = $query['sql'];
+      // having the , at the beginning is critical, because otherwise, we cannot remove the very last field of the table:
+      $new_query = preg_replace('/(, '.$field_name.') ([^,\)]+)/', ', '.$new_field_name.' \\2', $old_query);
+      $new_query = preg_replace('/('.$table_name.')/', $table_name.'__backup', $new_query);
+      $this->_sql .= $new_query.';';
+      $this->_sql .= 'INSERT INTO '.$table_name.'__backup SELECT '.implode(', ', array_map(function($f){
+        return $f->name;
+      }, $old_fields)).' FROM '.$table_name.';';
+      $this->_sql .= 'DROP TABLE '.$table_name.';';
+      $this->_sql .= 'ALTER TABLE '.$table_name.'__backup RENAME TO '.$table_name.';';
+    } catch (PDOException $e) {
+      print $e->getMessage();
+      die;
+    }
+    return $this->_sql;
   }
 
   public function get_tables() {
