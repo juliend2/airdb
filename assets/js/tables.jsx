@@ -7,7 +7,6 @@ class Table extends React.Component {
       tableRows: this.props.tableData,
       tableColumns: this.props.tableColumns,
       editedCell: null,
-      editingRow: null,
       editingCol: null,
       displayAddColumn: false,
       isView: this.props.isView
@@ -388,5 +387,17 @@ class Table extends React.Component {
     );
   }
 }
+
+
+Table.propType = {
+  tableName: React.PropTypes.string,
+  tableRows: React.PropTypes.array,
+  tableColumns: React.PropTypes.array,
+  editedCell: React.PropTypes.object,
+  editingCol: React.PropTypes.string,
+  displayAddColumn: React.PropTypes.bool,
+  isView: React.PropTypes.bool
+};
+
 
 window.Table = Table;

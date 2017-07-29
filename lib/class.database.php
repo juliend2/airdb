@@ -2,11 +2,11 @@
 
 class DB {
 
-  private $_db;
+  protected $_db;
 
-  private $_sql;
+  protected $_sql;
 
-  private $_tablename;
+  protected $_tablename;
 
   public function __construct($db) {
     $this->_db = $db;
@@ -34,10 +34,6 @@ class DB {
   public function create_table($tablename) {
     $this->_tablename = $tablename;
     $this->_sql .= 'CREATE TABLE IF NOT EXISTS '.$this->_tablename.' (id INTEGER PRIMARY KEY AUTOINCREMENT);';
-  }
-
-  public function create_diagram($diagramname) {
-    $this->_sql .= "INSERT INTO airdb___diagrams (name) VALUES ('".$diagramname."');";
   }
 
   public function table_exists($tablename) {
@@ -224,8 +220,8 @@ class DB {
   }
 
   public function get_query($query) {
-    $query = $this->_db->query($query);
-    return $query->fetchAll(PDO::FETCH_CLASS);
+    // $query = $this->_db->query($query);
+    return $this->_db->query($query)->fetchAll(PDO::FETCH_OBJ);
   }
 
 }

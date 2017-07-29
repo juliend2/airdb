@@ -1,6 +1,7 @@
 <?php
 
 include dirname(__FILE__).'/class.database.php';
+include dirname(__FILE__).'/class.airdb.php';
 
 try {
   /**************************************
@@ -14,7 +15,7 @@ try {
   // Set errormode to exceptions
   $DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $db = new DB($DB);
+  $db = new AirDB($DB);
 }
 catch(PDOException $e) {
   // Print PDOException message

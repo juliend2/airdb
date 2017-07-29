@@ -87,3 +87,19 @@ body {
   width: 80%;
   height: 200px;
 }
+
+/* diagram */
+.diagram {
+  width: 100%;
+  clear: both;
+  float: left;
+  display: flex;
+}
+.diagram__available_tables {
+  width: 200px;
+  background: lime;
+}
+.diagram__canvas {
+  width: 100%;
+  background: #aaa;
+}

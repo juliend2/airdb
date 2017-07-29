@@ -31,7 +31,7 @@ if (isset($_COOKIE['REAL_REFERER'])) {
   <script src="/assets/js/lib/jquery-3.2.1.min.js"></script>
   <script src="/assets/js/lib/moment-with-locales.min.js"></script>
   <script src="/assets/js/lib/lodash.min.js"></script>
-  <script src="/assets/js/lib/react.js"></script>
+  <script src="/assets/js/lib/react-with-addons.js"></script>
   <script src="/assets/js/lib/react-dom.js"></script>
   <script src="/assets/js/lib/react-datetime.js"></script>
   <script src="/assets/js/lib/browser.min.js"></script>
