@@ -4,7 +4,7 @@ class Table extends React.Component {
     super(props);
     this.state = {
       tableName: this.props.tableName,
-      tableRows: this.props.tableData,
+      tableRows: this.props.tableRows,
       tableColumns: this.props.tableColumns,
       editedCell: null,
       editingCol: null,

@@ -6,12 +6,12 @@
 <script type="text/babel">
 <?php $tablename = $_GET['table']; ?>
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
-var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
+var tableRows = <?php echo json_encode($db->get_values($tablename)); ?>;
 
 $(function(){
   ReactDOM.render(React.createElement(window.Table, {
     tableName: '<?php echo $tablename ?>',
-    tableData: tableData,
+    tableRows: tableRows,
     tableColumns: tableColumns,
     isView: false
   }), document.getElementById('container'));
