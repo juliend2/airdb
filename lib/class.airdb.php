@@ -66,7 +66,7 @@ class AirDB extends DB {
       WHERE   diagrams.name = '".$diagramname."'
     ";
     // echo $sql;
-    return $this->get_query($sql);
+    return $this->get_first($sql);
   }
 
 }

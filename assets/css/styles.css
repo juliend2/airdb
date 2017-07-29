@@ -99,6 +99,9 @@ body {
   width: 200px;
   background: lime;
 }
+  .table__name {
+    cursor: pointer;
+  }
 .diagram__canvas {
   width: 100%;
   background: #aaa;

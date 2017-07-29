@@ -104,6 +104,12 @@ class DB {
     return $stmt->execute();
   }
 
+  public function insert($sql) {
+    $sth = $this->_db->prepare($sql);
+    $sth->execute();
+    return $this->_db->lastInsertId();
+  }
+
   public function add_row($tablename, $row_data) {
     if ($row_data['id'] == '') {
       unset($row_data['id']);
@@ -220,8 +226,11 @@ class DB {
   }
 
   public function get_query($query) {
-    // $query = $this->_db->query($query);
     return $this->_db->query($query)->fetchAll(PDO::FETCH_OBJ);
+  }
+
+  public function get_first($query) {
+    return $this->_db->query($query)->fetch(PDO::FETCH_OBJ);
   }
 
 }
