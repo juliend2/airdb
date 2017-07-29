@@ -13,6 +13,10 @@ $diagram_nodes = $db->get_query("
   FROM airdb___nodes
   WHERE diagram_id = ".$diagram_data->diagram_id.";
 ");
+foreach ($diagram_nodes as $node) {
+  $node->table_rows = $db->get_values($node->table_name);
+  $node->table_columns = $db->get_fields($node->table_name);
+}
 $all_tables = $db->get_tables();
 
 ?>

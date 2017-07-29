@@ -1,7 +1,7 @@
 class DiagramNode extends React.Component {
   render() {
     return <div className="diagram-node">
-        {this.props.table_name}
+    {this.props.table_name} : {this.props.top} : {this.props.left}
       </div>;
   }
 }
@@ -61,6 +61,8 @@ class Diagram extends React.Component {
                 key={n.id}
                 id={n.id}
                 table_name={n.table_name}
+                top={n.top}
+                left={n.left}
                 />
             })}
           </div>

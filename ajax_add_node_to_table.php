@@ -18,7 +18,11 @@ if (isset($_POST) && isset($_POST['diagram_id'])) {
       'status'=> 'success',
       'table_name'=> $_POST['table_name'],
       'diagram'=> $_POST['diagram_id'],
-      'node_id'=> $id
+      'node_id'=> $id,
+      'top'=>$_POST['top'],
+      'left'=>$_POST['left'],
+      'table_rows' => $db->get_values($_POST['table_name']),
+      'table_columns' => $db->get_fields($_POST['table_name'])
     ]);
   } else {
     echo json_encode([
