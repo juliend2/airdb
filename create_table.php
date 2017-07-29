@@ -4,7 +4,7 @@ require_once './lib/db.php';
 if (isset($_POST) && isset($_POST['table_name'])) {
   $db->create_table($_POST['table_name']);
   for ($i=0; $i<count($_POST['field_names']); $i++) {
-    $db->add_field($_POST['field_names'][$i], $_POST['field_types'][$i]);
+    $db->add_column($_POST['field_names'][$i], $_POST['field_types'][$i]);
   }
   if ($db->end()) {
     header('Location: /?action=tables');

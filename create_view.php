@@ -4,8 +4,8 @@ require_once './lib/db.php';
 if (isset($_POST) && isset($_POST['view_name'])) {
   $success = $db->create_view($_POST['view_name'], $_POST['select_sql']);
   if ($success) {
-    // header('Location: /?action=tables');
-    $_SESSION['success'] = 'Successfully updated a view';
+    header('Location: /?action=view_view&view='.$_POST['view_name']);
+    $_SESSION['success'] = 'Successfully created a view';
   }
 }
 include './inc/header.php';

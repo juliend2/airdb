@@ -13,6 +13,10 @@ class DB {
     $this->_sql = 'BEGIN;';
   }
 
+  public function errorInfo() {
+    return $this->_db->errorInfo();
+  }
+
   public function end() {
     $this->_sql .= 'COMMIT;';
     try {
@@ -30,6 +34,18 @@ class DB {
   public function create_table($tablename) {
     $this->_tablename = $tablename;
     $this->_sql .= 'CREATE TABLE IF NOT EXISTS '.$this->_tablename.' (id INTEGER PRIMARY KEY AUTOINCREMENT);';
+  }
+
+  public function create_diagram($diagramname) {
+    $this->_sql .= "INSERT INTO airdb___diagrams (name) VALUES ('".$diagramname."');";
+  }
+
+  public function table_exists($tablename) {
+    $sql = '';
+    $describe_sql = "SELECT sql FROM sqlite_master WHERE name = '".$tablename."' ;";
+    $stmt = $this->_db->query($describe_sql);
+    $query = $stmt->fetch();
+    return $query['sql'];
   }
 
   public function create_view($view_name, $select_sql) {
@@ -204,6 +220,11 @@ class DB {
 
   public function get_values($tablename) {
     $query = $this->_db->query("SELECT * FROM ".$tablename."");
+    return $query->fetchAll(PDO::FETCH_CLASS);
+  }
+
+  public function get_query($query) {
+    $query = $this->_db->query($query);
     return $query->fetchAll(PDO::FETCH_CLASS);
   }
 
