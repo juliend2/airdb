@@ -6,6 +6,7 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('Table constructor', this.props.tableName, this.props.tableRows);
     this.state = {
       tableName: this.props.tableName,
       tableRows: this.props.tableRows,
@@ -326,7 +327,7 @@ class Table extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.tableRows.map((row) => {
+            {this.state.tableRows ? this.state.tableRows.map((row) => {
               j = 0;
               k += 1;
               return <tr key={k}>{this.state.tableColumns.map((col) => {
@@ -380,7 +381,7 @@ class Table extends React.Component {
               })}
               <td><a href="#" data-rowid={row.id} onClick={this.handleRemoveRow.bind(this)}>Delete</a></td>
               </tr>;
-            })}
+            }) : <tr ><td>{typeof this.state.tableRows}</td></tr>}
           </tbody>
         </table>
         {this.state.isView ?

@@ -420,7 +420,7 @@ body {
 }
 .diagram__available_tables {
   width: 200px;
-  background: lime;
+  background: #72ED84;
 }
 .table__name {
   cursor: pointer;
@@ -431,4 +431,5 @@ body {
 }
 .diagram-node {
   border: 1px solid black;
+  position: absolute;
 }

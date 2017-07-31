@@ -1,4 +1,5 @@
 var React = require('react');
+import Draggable from 'react-draggable';
 
 class DiagramNode extends React.Component {
 
@@ -26,17 +27,23 @@ class DiagramNode extends React.Component {
   }
 
   render() {
-    return <div className="diagram-node">
-      <div className="diagram-node__tools">
-        <a onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">delete</a>
-      </div>
-      <Table
-        tableName={this.props.table_name}
-        tableRows={this.props.table_rows}
-        tableColumns={this.props.table_columns}
-        isView={false}
-        />
-    </div>;
+    return <Draggable
+            handle=".handle"
+            defaultPosition={{x: parseInt(this.props.left, 10), y: parseInt(this.props.top, 10)}}
+            >
+            <div className="diagram-node">
+              <div className="diagram-node__tools">
+                <a onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">delete</a>
+                <span className="handle">Drag</span>
+              </div>
+              <Table
+                tableName={this.props.table_name}
+                tableRows={this.props.table_rows}
+                tableColumns={this.props.table_columns}
+                isView={false}
+                />
+            </div>
+          </Draggable>;
   }
 }
 
@@ -66,6 +73,8 @@ class Diagram extends React.Component {
         nodes: this.state.nodes.concat([{
           id: data.node_id,
           table_name: data.table_name,
+          table_rows: data.table_rows,
+          table_columns: data.table_columns,
           top: data.top,
           left: data.left
         }])
