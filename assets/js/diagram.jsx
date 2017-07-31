@@ -1,6 +1,33 @@
 class DiagramNode extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.id,
+      table_name: this.props.table_name,
+      table_rows: this.props.table_rows,
+      table_columns: this.props.table_columns,
+      diagram_id: this.props.diagram_id,
+      top: this.props.top,
+      left: this.props.left
+    };
+  }
+
+  handleDeleteDiagram(e) {
+    e.preventDefault();
+    $.post('/?action=ajax_remove_node_from_diagram', {
+      node_id: this.state.id,
+      table_name: this.state.table_name
+    }, (data, textstatus)=>{
+      this.props.deleteNode(this.state.id);
+    }.bind(this), 'json');
+  }
+
   render() {
     return <div className="diagram-node">
+      <div className="diagram-node__tools">
+        <a onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">delete</a>
+      </div>
       <Table
         tableName={this.props.table_name}
         tableRows={this.props.table_rows}
@@ -26,7 +53,7 @@ class Diagram extends React.Component {
   handleTableClick(e) {
     e.preventDefault();
     console.log('table', e.target.innerHTML);
-    $.post('/?action=ajax_add_node_to_table', {
+    $.post('/?action=ajax_add_node_to_diagram', {
       diagram_id: this.state.id,
       table_name: e.target.innerHTML,
       left: 1,
@@ -42,6 +69,14 @@ class Diagram extends React.Component {
         }])
       });
     }.bind(this), 'json');
+  }
+
+  deleteNode(node_id) {
+    this.setState({
+      nodes: _.reject(this.state.nodes, (node)=>{
+        return node.id == node_id;
+      })
+    });
   }
 
   render() {
@@ -68,8 +103,10 @@ class Diagram extends React.Component {
                 table_name={n.table_name}
                 table_rows={n.table_rows}
                 table_columns={n.table_columns}
+                diagram_id={n.diagram_id}
                 top={n.top}
                 left={n.left}
+                deleteNode={this.deleteNode.bind(this)}
                 />
             })}
           </div>

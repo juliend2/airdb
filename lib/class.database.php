@@ -110,6 +110,11 @@ class DB {
     return $this->_db->lastInsertId();
   }
 
+  public function delete($sql) {
+    $sth = $this->_db->prepare($sql);
+    return $sth->execute();
+  }
+
   public function add_row($tablename, $row_data) {
     if ($row_data['id'] == '') {
       unset($row_data['id']);

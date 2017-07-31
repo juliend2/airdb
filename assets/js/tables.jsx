@@ -270,6 +270,7 @@ class Table extends React.Component {
   }
 
   render() {
+    debugger;
     var j = 0;
     var k = 0;
     return (
