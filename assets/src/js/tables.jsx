@@ -1,4 +1,4 @@
-var fieldTypes = require('constants');
+var fieldTypes = require('./constants.js').fieldTypes;
 var _ = require('lodash');
 var React = require('react');
 
@@ -277,6 +277,7 @@ class Table extends React.Component {
   render() {
     var j = 0;
     var k = 0;
+    console.log('fieldTypes', fieldTypes);
     return (
       <div>
         <h2>{this.state.tableName}</h2>
