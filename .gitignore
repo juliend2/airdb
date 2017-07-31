@@ -2,3 +2,6 @@
 persodb.sqlite3
 *.swp
 tags
+
+node_modules/
+npm-debug.log

@@ -1,0 +1,434 @@
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+time {
+  display: inline;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-y: scroll;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+}
+
+ul, ol, dl {
+  margin: 0;
+}
+
+nav ul, ol.breadbrumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.group:after, body:after, .template-text .wrap.text .content:after, .template-text .wrap.text .featuring-slider-content:after, .section-home .wrap.navigation .content:after, .section-home .wrap.navigation .featuring-slider-content:after, .section-choice .wrap.choices .content:after, .section-choice .wrap.choices .featuring-slider-content:after, .section-choice .wrap.choices .content .choice-block:after, .section-choice .wrap.choices .featuring-slider-content .choice-block:after, .wrap.form-blocks .content:after, .wrap.form-blocks .featuring-slider-content:after, .form-blocks .content:after, .form-blocks .featuring-slider-content:after, .wrap.form-blocks .content .image-profil-wrap:after, .wrap.form-blocks .featuring-slider-content .image-profil-wrap:after, .form-blocks .content .image-profil-wrap:after, .form-blocks .featuring-slider-content .image-profil-wrap:after, .wrap.form-blocks .content .block-question:after, .wrap.form-blocks .featuring-slider-content .block-question:after, .form-blocks .content .block-question:after, .form-blocks .featuring-slider-content .block-question:after, .wrap.form-blocks .content .block-faq:after, .wrap.form-blocks .featuring-slider-content .block-faq:after, .form-blocks .content .block-faq:after, .form-blocks .featuring-slider-content .block-faq:after, .wrap.form-blocks .content .block-palier:after, .wrap.form-blocks .featuring-slider-content .block-palier:after, .form-blocks .content .block-palier:after, .form-blocks .featuring-slider-content .block-palier:after, .wrap.form-blocks .content .block-image:after, .wrap.form-blocks .featuring-slider-content .block-image:after, .wrap.form-blocks .content .block-video:after, .wrap.form-blocks .featuring-slider-content .block-video:after, .wrap.form-blocks .content .block-gallerie:after, .wrap.form-blocks .featuring-slider-content .block-gallerie:after, .wrap.form-blocks .content .block-videos:after, .wrap.form-blocks .featuring-slider-content .block-videos:after, .form-blocks .content .block-image:after, .form-blocks .featuring-slider-content .block-image:after, .form-blocks .content .block-video:after, .form-blocks .featuring-slider-content .block-video:after, .form-blocks .content .block-gallerie:after, .form-blocks .featuring-slider-content .block-gallerie:after, .form-blocks .content .block-videos:after, .form-blocks .featuring-slider-content .block-videos:after, .col-right:after, .col-left:after, .section-create-account .form-blocks form .col-left:after, .section-create-account .form-blocks form .col-right:after, .section-create-account .form-blocks form > fieldset:after, .project-title:after, .project-body:after, .project-body .people .creator:after, .project-body .people .project-tags:after, .project-body .people .contributions:after, .project-body .project:after, .project-body .project .share:after, .resume-projects:after, .template-explore .wrap.explore:after, .section-support .form-blocks .col-reward label > li:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.group, body, .template-text .wrap.text .content, .template-text .wrap.text .featuring-slider-content, .section-home .wrap.navigation .content, .section-home .wrap.navigation .featuring-slider-content, .section-choice .wrap.choices .content, .section-choice .wrap.choices .featuring-slider-content, .section-choice .wrap.choices .content .choice-block, .section-choice .wrap.choices .featuring-slider-content .choice-block, .wrap.form-blocks .content, .wrap.form-blocks .featuring-slider-content, .form-blocks .content, .form-blocks .featuring-slider-content, .wrap.form-blocks .content .image-profil-wrap, .wrap.form-blocks .featuring-slider-content .image-profil-wrap, .form-blocks .content .image-profil-wrap, .form-blocks .featuring-slider-content .image-profil-wrap, .wrap.form-blocks .content .block-question, .wrap.form-blocks .featuring-slider-content .block-question, .form-blocks .content .block-question, .form-blocks .featuring-slider-content .block-question, .wrap.form-blocks .content .block-faq, .wrap.form-blocks .featuring-slider-content .block-faq, .form-blocks .content .block-faq, .form-blocks .featuring-slider-content .block-faq, .wrap.form-blocks .content .block-palier, .wrap.form-blocks .featuring-slider-content .block-palier, .form-blocks .content .block-palier, .form-blocks .featuring-slider-content .block-palier, .wrap.form-blocks .content .block-image, .wrap.form-blocks .featuring-slider-content .block-image, .wrap.form-blocks .content .block-video, .wrap.form-blocks .featuring-slider-content .block-video, .wrap.form-blocks .content .block-gallerie, .wrap.form-blocks .featuring-slider-content .block-gallerie, .wrap.form-blocks .content .block-videos, .wrap.form-blocks .featuring-slider-content .block-videos, .form-blocks .content .block-image, .form-blocks .featuring-slider-content .block-image, .form-blocks .content .block-video, .form-blocks .featuring-slider-content .block-video, .form-blocks .content .block-gallerie, .form-blocks .featuring-slider-content .block-gallerie, .form-blocks .content .block-videos, .form-blocks .featuring-slider-content .block-videos, .col-right, .col-left, .section-create-account .form-blocks form .col-left, .section-create-account .form-blocks form .col-right, .section-create-account .form-blocks form > fieldset, .project-title, .project-body, .project-body .people .creator, .project-body .people .project-tags, .project-body .people .contributions, .project-body .project, .project-body .project .share, .resume-projects, .template-explore .wrap.explore, .section-support .form-blocks .col-reward label > li {
+  zoom: 1;
+}
+
+a *, button * {
+  cursor: pointer;
+}
+
+a img {
+  border: 0;
+}
+
+hr {
+  display: none;
+}
+
+small {
+  font-size: 90%;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+sup, sub {
+  height: 0;
+  line-height: 1;
+  vertical-align: baseline;
+  _vertical-align: bottom;
+  position: relative;
+  font-size: 75%;
+}
+
+sup {
+  bottom: 1ex;
+}
+
+sub {
+  top: .5ex;
+}
+
+span.amp {
+  font-family: "Bree Serif", serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 1.2em;
+  line-height: 0.8;
+}
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help;
+}
+
+button, input[type="submit"], input[type="button"], * html input {
+  width: auto;
+  overflow: visible;
+}
+
+button, label, select, option, input[type=submit], input[type=button] {
+  cursor: pointer;
+}
+
+button {
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 1px;
+}
+
+input {
+  margin: 0;
+}
+/*!
+ * https://github.com/YouCanBookMe/react-datetime
+ */
+
+.rdt {
+  position: relative;
+}
+.rdtPicker {
+  display: none;
+  position: absolute;
+  width: 250px;
+  padding: 4px;
+  margin-top: 1px;
+  z-index: 99999 !important;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  border: 1px solid #f9f9f9;
+}
+.rdtOpen .rdtPicker {
+  display: block;
+}
+.rdtStatic .rdtPicker {
+  box-shadow: none;
+  position: static;
+}
+
+.rdtPicker .rdtTimeToggle {
+  text-align: center;
+}
+
+.rdtPicker table {
+  width: 100%;
+  margin: 0;
+}
+.rdtPicker td,
+.rdtPicker th {
+  text-align: center;
+  height: 28px;
+}
+.rdtPicker td {
+  cursor: pointer;
+}
+.rdtPicker td.rdtDay:hover,
+.rdtPicker td.rdtHour:hover,
+.rdtPicker td.rdtMinute:hover,
+.rdtPicker td.rdtSecond:hover,
+.rdtPicker .rdtTimeToggle:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+.rdtPicker td.rdtOld,
+.rdtPicker td.rdtNew {
+  color: #999999;
+}
+.rdtPicker td.rdtToday {
+  position: relative;
+}
+.rdtPicker td.rdtToday:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid #428bca;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+.rdtPicker td.rdtActive,
+.rdtPicker td.rdtActive:hover {
+  background-color: #428bca;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.rdtPicker td.rdtActive.rdtToday:before {
+  border-bottom-color: #fff;
+}
+.rdtPicker td.rdtDisabled,
+.rdtPicker td.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+
+.rdtPicker td span.rdtOld {
+  color: #999999;
+}
+.rdtPicker td span.rdtDisabled,
+.rdtPicker td span.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+.rdtPicker th {
+  border-bottom: 1px solid #f9f9f9;
+}
+.rdtPicker .dow {
+  width: 14.2857%;
+  border-bottom: none;
+}
+.rdtPicker th.rdtSwitch {
+  width: 100px;
+}
+.rdtPicker th.rdtNext,
+.rdtPicker th.rdtPrev {
+  font-size: 21px;
+  vertical-align: top;
+}
+
+.rdtPrev span,
+.rdtNext span {
+  display: block;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.rdtPicker th.rdtDisabled,
+.rdtPicker th.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+.rdtPicker thead tr:first-child th {
+  cursor: pointer;
+}
+.rdtPicker thead tr:first-child th:hover {
+  background: #eeeeee;
+}
+
+.rdtPicker tfoot {
+  border-top: 1px solid #f9f9f9;
+}
+
+.rdtPicker button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.rdtPicker button:hover {
+  background-color: #eee;
+}
+
+.rdtPicker thead button {
+  width: 100%;
+  height: 100%;
+}
+
+td.rdtMonth,
+td.rdtYear {
+  height: 50px;
+  width: 25%;
+  cursor: pointer;
+}
+td.rdtMonth:hover,
+td.rdtYear:hover {
+  background: #eee;
+}
+
+.rdtCounters {
+  display: inline-block;
+}
+
+.rdtCounters > div {
+  float: left;
+}
+
+.rdtCounter {
+  height: 100px;
+}
+
+.rdtCounter {
+  width: 40px;
+}
+
+.rdtCounterSeparator {
+  line-height: 100px;
+}
+
+.rdtCounter .rdtBtn {
+  height: 40%;
+  line-height: 40px;
+  cursor: pointer;
+  display: block;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+.rdtCounter .rdtBtn:hover {
+  background: #eee;
+}
+.rdtCounter .rdtCount {
+  height: 20%;
+  font-size: 1.2em;
+}
+
+.rdtMilli {
+  vertical-align: middle;
+  padding-left: 8px;
+  width: 48px;
+}
+
+.rdtMilli input {
+  width: 100%;
+  font-size: 1.2em;
+  margin-top: 37px;
+}
+body {
+  font: 14px/1 'Helvetica Neue', Helvetica, sans-serif;
+  margin: 1rem 2rem;
+}
+.success {
+  background: #D1FFEA;
+  border: 2px solid #74AB92;
+  padding: 10px 15px;
+}
+.failure,
+.error {
+  background: #FF9E9E;
+  border: 2px solid #FF0808;
+  padding: 10px 15px;
+}
+.block {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+.nav {
+  float: left;
+  margin-bottom: 3rem;
+  clear: both;
+  width: 100%;
+}
+.nav li {
+  float: left;
+  margin-right: 2px;
+}
+.nav li a {
+  color: black;
+  display: inline-block;
+  line-height: 3rem;
+  background: #aaa;
+  padding: 0 1rem;
+}
+.nav li a:hover {
+  background: yellow;
+}
+.table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+.table td,
+.table th {
+  border: 1px solid #ccc;
+  line-height: 1.2rem;
+}
+.table td span {
+  display: inline-block;
+  line-height: 1.2rem;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  min-height: 1.2rem;
+}
+.table td span.datatype-datetime {
+  overflow: visible;
+}
+.table #add-column-th {
+  position: relative;
+  width: 200px;
+}
+.table #js-add-column-box {
+  position: absolute;
+  top: 1.2rem;
+  left: 0px;
+  background: white;
+  width: 100%;
+  border: 1px solid #CCCCCC;
+  text-align: left;
+  font-weight: normal;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 3px 5px;
+}
+.view-sql {
+  width: 80%;
+  height: 200px;
+}
+/* diagram */
+.diagram {
+  width: 100%;
+  clear: both;
+  float: left;
+  display: flex;
+}
+.diagram__available_tables {
+  width: 200px;
+  background: lime;
+}
+.table__name {
+  cursor: pointer;
+}
+.diagram__canvas {
+  width: 100%;
+  background: #aaa;
+}
+.diagram-node {
+  border: 1px solid black;
+}

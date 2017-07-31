@@ -2,8 +2,7 @@
 <?php include './inc/header.php'; ?>
 <h1>Tables</h1>
 <div id="container"></div>
-<script src="/assets/js/tables.jsx" type="text/babel"></script>
-<script type="text/babel">
+<script>
 <?php $tablename = $_GET['table']; ?>
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
 var tableRows = <?php echo json_encode($db->get_values($tablename)); ?>;
@@ -16,6 +15,5 @@ $(function(){
     isView: false
   }), document.getElementById('container'));
 });
-
 </script>
 <?php include './inc/footer.php'; ?>

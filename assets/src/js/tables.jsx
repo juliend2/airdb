@@ -1,3 +1,7 @@
+var fieldTypes = require('constants');
+var _ = require('lodash');
+var React = require('react');
+
 class Table extends React.Component {
 
   constructor(props) {
@@ -33,8 +37,8 @@ class Table extends React.Component {
         row: this.state.tableRows[this.state.tableRows.length-1]
       }, (data, textStatus) => {
         // console.log('data', data);
-      }.bind(this), 'json');
-    }.bind(this));
+      }, 'json');
+    });
   }
 
   handleInputModified(e) {
@@ -66,7 +70,7 @@ class Table extends React.Component {
         })
       }, (data, textStatus) => {
         // console.log('edit saved');
-      }.bind(this), 'json');
+      }, 'json');
     });
   }
 
@@ -101,7 +105,7 @@ class Table extends React.Component {
           })
         }, (data, textStatus) => {
           // console.log('edit saved');
-        }.bind(this), 'json');
+        }, 'json');
       });
     }
   }
@@ -127,7 +131,7 @@ class Table extends React.Component {
       if (this.state.displayAddColumn) {
         this.refs.fieldname.focus();
       }
-    }.bind(this));
+    });
   }
 
   handleAddColumn(e) {
@@ -156,7 +160,7 @@ class Table extends React.Component {
         tableColumns: currentColumns,
         tableRows: newRows
       });
-    }.bind(this), 'json');
+    }, 'json');
   }
 
   handleRemoveColumn(e) {
@@ -177,7 +181,7 @@ class Table extends React.Component {
         tableColumns: newColumns,
         tableRows: newRows
       });
-    }.bind(this), 'json');
+    }, 'json');
   }
 
   handleStartEditingColumn(e) {
@@ -186,7 +190,7 @@ class Table extends React.Component {
     // console.log('columnName', columnName);
     this.setState({editingCol: columnName}, (row) => {
       // console.log('row', row, this.state.editingCol);
-    }.bind(this));
+    });
   }
 
   handleStopEditingColumn(e) {
@@ -213,8 +217,8 @@ class Table extends React.Component {
           tableRows: newRows,
           editingCol: null
         });
-      }.bind(this), 'json');
-    }.bind(this));
+      }, 'json');
+    });
   }
 
   handleRemoveRow(e) {
@@ -230,7 +234,7 @@ class Table extends React.Component {
         this.setState({
           tableRows: newRows
         });
-      }.bind(this), 'json');
+      }, 'json');
     }
   }
 
@@ -270,7 +274,6 @@ class Table extends React.Component {
   }
 
   render() {
-    debugger;
     var j = 0;
     var k = 0;
     return (
@@ -278,7 +281,7 @@ class Table extends React.Component {
         <h2>{this.state.tableName}</h2>
         <table className="table">
           <thead>
-            <tr onClick={()=>{/*console.log(this.state);*/}.bind(this)}>
+            <tr >
               {_.map(this.state.tableColumns, (column, i) => {
                 return <th key={i}>
                   { column.name == this.state.editingCol ? <input type="text" name="rowname" onBlur={this.handleStopEditingColumn.bind(this)} defaultValue={column.name}/> : column.name}
@@ -329,13 +332,13 @@ class Table extends React.Component {
               return <tr key={k}>{this.state.tableColumns.map((col) => {
                 j += 1;
                 return <td key={j} data-rowid={row.id} data-colname={col.name}>{
-                  ()=>{
+                  (()=>{
                     if (
                       (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) && col.type != 'bool'
                     ) {
                       // input field for adding first value to cell
                       return <span className={"datatype-"+ col.type}>{
-                          (function(colType) {
+                          ((colType) => {
                             switch (colType) {
                               case 'datetime':
                                 return <Datetime
@@ -344,7 +347,7 @@ class Table extends React.Component {
                                     'data-rowid': row.id,
                                     'data-colname': col.name
                                   }}
-                                  onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}.bind(this)}
+                                  onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}}
                                   onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />;
                               default:
                                 return <input
@@ -353,7 +356,7 @@ class Table extends React.Component {
                                   onBlur={this.handleInputModified.bind(this)}
                                   defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />;
                             }
-                          }.bind(this))(col.type)
+                          })(col.type)
                         }
                         </span>;
 
@@ -372,12 +375,12 @@ class Table extends React.Component {
                         return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
                       }
                     }
-                  }.bind(this)()
+                  })()
                 }</td>;
-              }.bind(this))}
+              })}
               <td><a href="#" data-rowid={row.id} onClick={this.handleRemoveRow.bind(this)}>Delete</a></td>
               </tr>;
-            }.bind(this))}
+            })}
           </tbody>
         </table>
         {this.state.isView ?

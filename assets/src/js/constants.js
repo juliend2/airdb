@@ -1,4 +1,4 @@
-const fieldTypes = [
+export const fieldTypes = [
  {name: 'Text', slug: 'text'},
  {name: 'Float', slug: 'real'},
  {name: 'Datetime', slug: 'datetime'},

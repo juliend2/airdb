@@ -12,8 +12,7 @@ if (isset($_POST) && isset($_POST['view_name'])) {
 <?php $tablename = $_GET['view']; ?>
 <h1>Views</h1>
 <div id="container"></div>
-<script src="/assets/js/tables.jsx" type="text/babel"></script>
-<script type="text/babel">
+<script >
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
 var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
 

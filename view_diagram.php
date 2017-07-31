@@ -3,16 +3,16 @@
 <?php $diagram_name = $_GET['diagram']; ?>
 
 <div id="container"></div>
-<script src="/assets/js/tables.jsx" type="text/babel"></script>
-<script src="/assets/js/diagram.jsx" type="text/babel"></script>
 <?php
 
 $diagram_data = $db->get_diagram($diagram_name);
-$diagram_nodes = $db->get_query("
+$sql = "
   SELECT *
   FROM airdb___nodes
   WHERE diagram_id = ".$diagram_data->diagram_id.";
-");
+";
+// echo $sql;
+$diagram_nodes = $db->get_query($sql);
 foreach ($diagram_nodes as $node) {
   $node->table_rows = $db->get_values($node->table_name);
   $node->table_columns = $db->get_fields($node->table_name);
@@ -20,13 +20,15 @@ foreach ($diagram_nodes as $node) {
 $all_tables = $db->get_tables();
 
 ?>
-<script type="text/babel">
+<script>
+var nodes = <?php echo json_encode($diagram_nodes); ?>;
+var allTables = <?php echo json_encode($all_tables); ?>;
 $(function(){
   ReactDOM.render(React.createElement(window.Diagram, {
     id: <?php echo $diagram_data->diagram_id ?>,
     name: "<?php echo $diagram_name ?>",
-    nodes: <?php echo json_encode($diagram_nodes); ?>,
-    allTables: <?php echo json_encode($all_tables); ?>
+    nodes: nodes,
+    allTables: allTables
   }), $('#container')[0]);
 });
 </script>

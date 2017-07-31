@@ -1,3 +1,5 @@
+var React = require('react');
+
 class DiagramNode extends React.Component {
 
   constructor(props) {
@@ -20,7 +22,7 @@ class DiagramNode extends React.Component {
       table_name: this.state.table_name
     }, (data, textstatus)=>{
       this.props.deleteNode(this.state.id);
-    }.bind(this), 'json');
+    }, 'json');
   }
 
   render() {
@@ -68,7 +70,7 @@ class Diagram extends React.Component {
           left: data.left
         }])
       });
-    }.bind(this), 'json');
+    }, 'json');
   }
 
   deleteNode(node_id) {
@@ -91,7 +93,7 @@ class Diagram extends React.Component {
               key={i}
               className="table__name"
               onClick={this.handleTableClick.bind(this)}>{t}</li>
-            }.bind(this))}
+            })}
             </ul>
           </div>
           <div className="diagram__canvas">
