@@ -110,9 +110,17 @@ class DB {
     return $this->_db->lastInsertId();
   }
 
-  public function delete($sql) {
+  public function execute($sql) {
     $sth = $this->_db->prepare($sql);
     return $sth->execute();
+  }
+
+  public function update($sql) {
+    return $this->execute($sql);
+  }
+
+  public function delete($sql) {
+    return $this->execute($sql);
   }
 
   public function add_row($tablename, $row_data) {

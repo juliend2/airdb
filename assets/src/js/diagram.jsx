@@ -26,15 +26,32 @@ class DiagramNode extends React.Component {
     }, 'json');
   }
 
+  handleDragStop(e: MouseEvent) {
+    e.preventDefault()
+    console.log('stopped dragging', 'X', e.x, 'Y', e.y);
+    // debugger;
+    console.log('$(e.target).offset().left', $(e.target).offset().left, "$(e.target).closest('#js-diagram__draggable-area').offset().left", $(e.target).closest('#js-diagram__draggable-area').offset().left);
+    $.post('/?action=ajax_dragged_node', {
+      node_id: this.state.id,
+      table_name: this.state.table_name,
+      left: ($(e.target).closest('#diagram-node').offset().left - $(e.target).closest('#js-diagram__draggable-area').offset().left),
+      top: ($(e.target).closest('#diagram-node').offset().top - $(e.target).closest('#js-diagram__draggable-area').offset().top)
+    }, (data, textstatus)=>{
+      // this.props.deleteNode(this.state.id);
+    }, 'json');
+  }
+
   render() {
     return <Draggable
-            handle=".handle"
+            handle=".js-handle"
             defaultPosition={{x: parseInt(this.props.left, 10), y: parseInt(this.props.top, 10)}}
+            onStop={this.handleDragStop.bind(this)}
+            bounds={{left: 0, top: 0, bottom: 3000, right: 3000}}
             >
-            <div className="diagram-node">
+            <div className="diagram-node" id="diagram-node">
               <div className="diagram-node__tools">
                 <a onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">delete</a>
-                <span className="handle">Drag</span>
+                <span className="js-handle  tools__drag-handle">Drag</span>
               </div>
               <Table
                 tableName={this.props.table_name}
@@ -68,7 +85,6 @@ class Diagram extends React.Component {
       left: 1,
       top: 1
     }, (data, textstatus)=>{
-      console.log('success', data);
       this.setState({
         nodes: this.state.nodes.concat([{
           id: data.node_id,
@@ -107,6 +123,7 @@ class Diagram extends React.Component {
           </div>
           <div className="diagram__canvas">
           <h2>Diagram</h2>
+            <div id="js-diagram__draggable-area">
             {this.state.nodes.map((n , i)=>{
               return <DiagramNode
                 key={n.id}
@@ -120,6 +137,7 @@ class Diagram extends React.Component {
                 deleteNode={this.deleteNode.bind(this)}
                 />
             })}
+            </div>
           </div>
         </div>
       </div>

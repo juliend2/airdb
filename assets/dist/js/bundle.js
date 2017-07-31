@@ -40169,17 +40169,35 @@ var DiagramNode = function (_React$Component) {
       }, 'json');
     }
   }, {
+    key: 'handleDragStop',
+    value: function handleDragStop(e) {
+      e.preventDefault();
+      console.log('stopped dragging', 'X', e.x, 'Y', e.y);
+      // debugger;
+      console.log('$(e.target).offset().left', $(e.target).offset().left, "$(e.target).closest('#js-diagram__draggable-area').offset().left", $(e.target).closest('#js-diagram__draggable-area').offset().left);
+      $.post('/?action=ajax_dragged_node', {
+        node_id: this.state.id,
+        table_name: this.state.table_name,
+        left: $(e.target).closest('#diagram-node').offset().left - $(e.target).closest('#js-diagram__draggable-area').offset().left,
+        top: $(e.target).closest('#diagram-node').offset().top - $(e.target).closest('#js-diagram__draggable-area').offset().top
+      }, function (data, textstatus) {
+        // this.props.deleteNode(this.state.id);
+      }, 'json');
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         _reactDraggable2.default,
         {
-          handle: '.handle',
-          defaultPosition: { x: parseInt(this.props.left, 10), y: parseInt(this.props.top, 10) }
+          handle: '.js-handle',
+          defaultPosition: { x: parseInt(this.props.left, 10), y: parseInt(this.props.top, 10) },
+          onStop: this.handleDragStop.bind(this),
+          bounds: { left: 0, top: 0, bottom: 3000, right: 3000 }
         },
         React.createElement(
           'div',
-          { className: 'diagram-node' },
+          { className: 'diagram-node', id: 'diagram-node' },
           React.createElement(
             'div',
             { className: 'diagram-node__tools' },
@@ -40190,7 +40208,7 @@ var DiagramNode = function (_React$Component) {
             ),
             React.createElement(
               'span',
-              { className: 'handle' },
+              { className: 'js-handle  tools__drag-handle' },
               'Drag'
             )
           ),
@@ -40238,7 +40256,6 @@ var Diagram = function (_React$Component2) {
         left: 1,
         top: 1
       }, function (data, textstatus) {
-        console.log('success', data);
         _this4.setState({
           nodes: _this4.state.nodes.concat([{
             id: data.node_id,
@@ -40303,19 +40320,23 @@ var Diagram = function (_React$Component2) {
               null,
               'Diagram'
             ),
-            this.state.nodes.map(function (n, i) {
-              return React.createElement(DiagramNode, {
-                key: n.id,
-                id: n.id,
-                table_name: n.table_name,
-                table_rows: n.table_rows,
-                table_columns: n.table_columns,
-                diagram_id: n.diagram_id,
-                top: n.top,
-                left: n.left,
-                deleteNode: _this5.deleteNode.bind(_this5)
-              });
-            })
+            React.createElement(
+              'div',
+              { id: 'js-diagram__draggable-area' },
+              this.state.nodes.map(function (n, i) {
+                return React.createElement(DiagramNode, {
+                  key: n.id,
+                  id: n.id,
+                  table_name: n.table_name,
+                  table_rows: n.table_rows,
+                  table_columns: n.table_columns,
+                  diagram_id: n.diagram_id,
+                  top: n.top,
+                  left: n.left,
+                  deleteNode: _this5.deleteNode.bind(_this5)
+                });
+              })
+            )
           )
         )
       );
