@@ -355,6 +355,7 @@ class Table extends React.Component {
                                 return <input
                                   type="text"
                                   name={col.name}
+                                  autoFocus
                                   onBlur={this.handleInputModified.bind(this)}
                                   defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />;
                             }

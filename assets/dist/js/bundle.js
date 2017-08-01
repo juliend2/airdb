@@ -22884,6 +22884,7 @@ var Table = function (_React$Component) {
                                 return React.createElement('input', {
                                   type: 'text',
                                   name: col.name,
+                                  autoFocus: true,
                                   onBlur: _this10.handleInputModified.bind(_this10),
                                   defaultValue: row && row.hasOwnProperty(col.name) ? row[col.name] : '' });
                             }
@@ -40199,13 +40200,13 @@ var DiagramNode = function (_React$Component) {
             { className: 'diagram-node__tools' },
             React.createElement(
               'a',
-              { onClick: this.handleDeleteDiagram.bind(this), 'data-id': this.props.id, href: '' },
-              'delete'
+              { className: 'tools__close', onClick: this.handleDeleteDiagram.bind(this), 'data-id': this.props.id, href: '' },
+              '\u2573'
             ),
             React.createElement(
               'span',
               { className: 'js-handle  tools__drag-handle' },
-              'Drag'
+              '\u205C'
             )
           ),
           React.createElement(Table, {

@@ -50,8 +50,8 @@ class DiagramNode extends React.Component {
             >
             <div className="diagram-node" id="diagram-node">
               <div className="diagram-node__tools">
-                <a onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">delete</a>
-                <span className="js-handle  tools__drag-handle">Drag</span>
+                <a className="tools__close" onClick={this.handleDeleteDiagram.bind(this)} data-id={this.props.id} href="">╳</a>
+                <span className="js-handle  tools__drag-handle">⁜</span>
               </div>
               <Table
                 tableName={this.props.table_name}

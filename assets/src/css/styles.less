@@ -6,7 +6,9 @@
 
 body {
   font: 14px/1 'Helvetica Neue', Helvetica, sans-serif;
-  margin: 1rem 2rem;
+  margin: 0;
+  margin-bottom: 30px;
+  background: #eee;
 }
 
 .success {
@@ -41,7 +43,7 @@ body {
   color: black;
   display: inline-block;
   line-height: 3rem;
-  background: #aaa;
+  background: #eee;
   padding: 0 1rem;
 }
 .nav li a:hover {
@@ -58,7 +60,7 @@ body {
 }
 .table td span {
   display: inline-block;
-  line-height: 1.2rem;
+  line-height: 1.6rem;
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -107,12 +109,20 @@ body {
   }
 .diagram__canvas {
   width: 100%;
-  background: #aaa;
+  background: #eee;
 }
 .diagram-node {
   border: 1px solid black;
   position: absolute;
+  background: white;
 }
 .tools__drag-handle {
   cursor: move;
+  font-size: 3rem;
+  padding: 3px;
+}
+.tools__close {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
 }
