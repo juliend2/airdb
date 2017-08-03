@@ -24,3 +24,7 @@
 * when we blur on an empty datetime field, it doesn't work properly
 * when focusing on a datetime field, it should auto-select the previous
   (current) value
+
+## LIENCE
+
+MIT
