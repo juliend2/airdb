@@ -22788,196 +22788,204 @@ var Table = function (_React$Component) {
       return React.createElement(
         'div',
         null,
-        React.createElement(
-          'h2',
+        this.state.tableExists ? React.createElement(
+          'div',
           null,
-          'Table: ',
-          this.state.editingTableName ? React.createElement('input', { onKeyUp: this.handleTableNameKeyUp.bind(this), defaultValue: this.state.tableName, type: 'text' }) : React.createElement(
-            'span',
-            { onClick: this.handleClickTableName.bind(this) },
-            this.state.tableName
-          )
-        ),
-        React.createElement(
-          'table',
-          { className: 'table' },
           React.createElement(
-            'thead',
+            'h2',
             null,
+            'Table: ',
+            this.state.editingTableName ? React.createElement('input', { onKeyUp: this.handleTableNameKeyUp.bind(this), defaultValue: this.state.tableName, type: 'text' }) : React.createElement(
+              'span',
+              { onClick: this.handleClickTableName.bind(this) },
+              this.state.tableName
+            )
+          ),
+          React.createElement(
+            'table',
+            { className: 'table' },
             React.createElement(
-              'tr',
+              'thead',
               null,
-              _.map(this.state.tableColumns, function (column, i) {
-                return React.createElement(
-                  'th',
-                  { key: i },
-                  column.name == _this11.state.editingCol ? React.createElement('input', { type: 'text', name: 'rowname', onBlur: _this11.handleStopEditingColumn.bind(_this11), defaultValue: column.name }) : column.name,
-                  column.name == 'id' || _this11.state.isView ? React.createElement('span', null) : React.createElement(
-                    'a',
-                    { href: '#', 'data-colname': column.name, onClick: _this11.handleStartEditingColumn.bind(_this11) },
-                    '\u270E'
-                  ),
-                  column.name == 'id' || _this11.state.isView ? React.createElement('span', null) : React.createElement(
-                    'a',
-                    { href: '#', 'data-colname': column.name, onClick: _this11.handleRemoveColumn.bind(_this11) },
-                    '\u2715'
-                  )
-                );
-              }),
               React.createElement(
-                'th',
-                { id: 'add-column-th' },
-                React.createElement(
-                  'a',
-                  { id: 'js-add-column', href: '#', onClick: this.handleDisplayAddColumn.bind(this) },
-                  'Add a column'
-                ),
-                React.createElement(
-                  'div',
-                  { id: 'js-add-column-box', style: { display: this.state.displayAddColumn ? 'block' : 'none' } },
-                  React.createElement(
-                    'form',
-                    { action: '#', method: 'post', onSubmit: this.handleAddColumn.bind(this) },
-                    React.createElement(
-                      'p',
-                      null,
-                      React.createElement('input', {
-                        type: 'text',
-                        id: 'column_name',
-                        name: 'name',
-                        onChange: this.handleNewColumnNameChange.bind(this),
-                        value: this.state.newColumnName,
-                        ref: 'fieldname',
-                        placeholder: 'Name of the column' }),
-                      React.createElement(
-                        'span',
-                        { className: function (fields) {
-                            fields.push(_this11.state.newColumnNameError ? 'block' : 'hidden');
-                            return fields.join(' ');
-                          }(['error']) },
-                        this.state.newColumnNameError
-                      )
+                'tr',
+                null,
+                _.map(this.state.tableColumns, function (column, i) {
+                  return React.createElement(
+                    'th',
+                    { key: i },
+                    column.name == _this11.state.editingCol ? React.createElement('input', { type: 'text', name: 'rowname', onBlur: _this11.handleStopEditingColumn.bind(_this11), defaultValue: column.name }) : column.name,
+                    column.name == 'id' || _this11.state.isView ? React.createElement('span', null) : React.createElement(
+                      'a',
+                      { href: '#', 'data-colname': column.name, onClick: _this11.handleStartEditingColumn.bind(_this11) },
+                      '\u270E'
                     ),
+                    column.name == 'id' || _this11.state.isView ? React.createElement('span', null) : React.createElement(
+                      'a',
+                      { href: '#', 'data-colname': column.name, onClick: _this11.handleRemoveColumn.bind(_this11) },
+                      '\u2715'
+                    )
+                  );
+                }),
+                React.createElement(
+                  'th',
+                  { id: 'add-column-th' },
+                  React.createElement(
+                    'a',
+                    { id: 'js-add-column', href: '#', onClick: this.handleDisplayAddColumn.bind(this) },
+                    'Add a column'
+                  ),
+                  React.createElement(
+                    'div',
+                    { id: 'js-add-column-box', style: { display: this.state.displayAddColumn ? 'block' : 'none' } },
                     React.createElement(
-                      'p',
-                      null,
+                      'form',
+                      { action: '#', method: 'post', onSubmit: this.handleAddColumn.bind(this) },
                       React.createElement(
-                        'label',
-                        { htmlFor: 'column_type' },
-                        'Data Type:'
+                        'p',
+                        null,
+                        React.createElement('input', {
+                          type: 'text',
+                          id: 'column_name',
+                          name: 'name',
+                          onChange: this.handleNewColumnNameChange.bind(this),
+                          value: this.state.newColumnName,
+                          ref: 'fieldname',
+                          placeholder: 'Name of the column' }),
+                        React.createElement(
+                          'span',
+                          { className: function (fields) {
+                              fields.push(_this11.state.newColumnNameError ? 'block' : 'hidden');
+                              return fields.join(' ');
+                            }(['error']) },
+                          this.state.newColumnNameError
+                        )
                       ),
                       React.createElement(
-                        'select',
-                        { name: 'type', id: 'column_type' },
-                        _.map(fieldTypes, function (fieldType, index) {
-                          return React.createElement(
-                            'option',
-                            { value: fieldType.slug, key: index },
-                            fieldType.name
-                          );
-                        })
+                        'p',
+                        null,
+                        React.createElement(
+                          'label',
+                          { htmlFor: 'column_type' },
+                          'Data Type:'
+                        ),
+                        React.createElement(
+                          'select',
+                          { name: 'type', id: 'column_type' },
+                          _.map(fieldTypes, function (fieldType, index) {
+                            return React.createElement(
+                              'option',
+                              { value: fieldType.slug, key: index },
+                              fieldType.name
+                            );
+                          })
+                        )
+                      ),
+                      React.createElement(
+                        'p',
+                        null,
+                        React.createElement('input', { type: 'submit', value: 'Add' })
                       )
-                    ),
-                    React.createElement(
-                      'p',
-                      null,
-                      React.createElement('input', { type: 'submit', value: 'Add' })
                     )
                   )
                 )
               )
-            )
-          ),
-          React.createElement(
-            'tbody',
-            null,
-            this.state.tableRows ? this.state.tableRows.map(function (row) {
-              j = 0;
-              k += 1;
-              return React.createElement(
-                'tr',
-                { key: k },
-                _this11.state.tableColumns.map(function (col) {
-                  j += 1;
-                  return React.createElement(
-                    'td',
-                    { key: j, 'data-rowid': row.id, 'data-colname': col.name },
-                    function () {
-                      if ((row[col.name] == null || _this11.state.editedCell != null && col.name == _this11.state.editedCell.colName && row.id == _this11.state.editedCell.rowID) && col.type != 'bool') {
-                        // input field for adding first value to cell
-                        return React.createElement(
-                          'span',
-                          { className: "datatype-" + col.type },
-                          function (colType) {
-                            switch (colType) {
-                              case 'datetime':
-                                return React.createElement(Datetime, {
-                                  inputProps: {
-                                    name: col.name,
-                                    'data-rowid': row.id,
-                                    'data-colname': col.name
-                                  },
-                                  onFocus: function onFocus(e) {
-                                    _this11.setState({ currentRowID: row.id, currentColName: col.name });
-                                  },
-                                  onBlur: _this11.handleInputModified.bind(_this11), locale: 'fr-ca' });
-                              default:
-                                return React.createElement('input', {
-                                  type: 'text',
-                                  name: col.name,
-                                  autoFocus: true,
-                                  onBlur: _this11.handleInputModified.bind(_this11),
-                                  defaultValue: row && row.hasOwnProperty(col.name) ? row[col.name] : '' });
-                            }
-                          }(col.type)
-                        );
-                      } else {
-                        // display value
-                        if (col.type == 'bool') {
-                          return React.createElement('input', {
-                            type: 'checkbox',
-                            name: col.name,
-                            value: row[col.name] ? 'on' : 'off',
-                            checked: row[col.name] && parseInt(row[col.name], 10) > 0,
-                            onChange: _this11.handleBooleanChange.bind(_this11),
-                            disabled: _this11.state.isView
-                          });
-                        } else {
+            ),
+            React.createElement(
+              'tbody',
+              null,
+              this.state.tableRows ? this.state.tableRows.map(function (row) {
+                j = 0;
+                k += 1;
+                return React.createElement(
+                  'tr',
+                  { key: k },
+                  _this11.state.tableColumns.map(function (col) {
+                    j += 1;
+                    return React.createElement(
+                      'td',
+                      { key: j, 'data-rowid': row.id, 'data-colname': col.name },
+                      function () {
+                        if ((row[col.name] == null || _this11.state.editedCell != null && col.name == _this11.state.editedCell.colName && row.id == _this11.state.editedCell.rowID) && col.type != 'bool') {
+                          // input field for adding first value to cell
                           return React.createElement(
                             'span',
-                            { className: 'data', onClick: _this11.handleStartEditingCell.bind(_this11) },
-                            row[col.name]
+                            { className: "datatype-" + col.type },
+                            function (colType) {
+                              switch (colType) {
+                                case 'datetime':
+                                  return React.createElement(Datetime, {
+                                    inputProps: {
+                                      name: col.name,
+                                      'data-rowid': row.id,
+                                      'data-colname': col.name
+                                    },
+                                    onFocus: function onFocus(e) {
+                                      _this11.setState({ currentRowID: row.id, currentColName: col.name });
+                                    },
+                                    onBlur: _this11.handleInputModified.bind(_this11), locale: 'fr-ca' });
+                                default:
+                                  return React.createElement('input', {
+                                    type: 'text',
+                                    name: col.name,
+                                    autoFocus: true,
+                                    onBlur: _this11.handleInputModified.bind(_this11),
+                                    defaultValue: row && row.hasOwnProperty(col.name) ? row[col.name] : '' });
+                              }
+                            }(col.type)
                           );
+                        } else {
+                          // display value
+                          if (col.type == 'bool') {
+                            return React.createElement('input', {
+                              type: 'checkbox',
+                              name: col.name,
+                              value: row[col.name] ? 'on' : 'off',
+                              checked: row[col.name] && parseInt(row[col.name], 10) > 0,
+                              onChange: _this11.handleBooleanChange.bind(_this11),
+                              disabled: _this11.state.isView
+                            });
+                          } else {
+                            return React.createElement(
+                              'span',
+                              { className: 'data', onClick: _this11.handleStartEditingCell.bind(_this11) },
+                              row[col.name]
+                            );
+                          }
                         }
-                      }
-                    }()
-                  );
-                }),
+                      }()
+                    );
+                  }),
+                  React.createElement(
+                    'td',
+                    null,
+                    React.createElement(
+                      'a',
+                      { href: '#', 'data-rowid': row.id, onClick: _this11.handleRemoveRow.bind(_this11) },
+                      'Delete'
+                    )
+                  )
+                );
+              }) : React.createElement(
+                'tr',
+                null,
                 React.createElement(
                   'td',
                   null,
-                  React.createElement(
-                    'a',
-                    { href: '#', 'data-rowid': row.id, onClick: _this11.handleRemoveRow.bind(_this11) },
-                    'Delete'
-                  )
+                  _typeof(this.state.tableRows)
                 )
-              );
-            }) : React.createElement(
-              'tr',
-              null,
-              React.createElement(
-                'td',
-                null,
-                _typeof(this.state.tableRows)
               )
             )
+          ),
+          this.state.isView ? React.createElement('span', null) : React.createElement(
+            'a',
+            { href: '#', onClick: this.handleAddRow.bind(this) },
+            'Add a Row'
           )
-        ),
-        this.state.isView ? React.createElement('span', null) : React.createElement(
-          'a',
-          { href: '#', onClick: this.handleAddRow.bind(this) },
-          'Add a Row'
+        ) : React.createElement(
+          'p',
+          { className: 'error' },
+          'That table doesn\'t exist.'
         )
       );
     }

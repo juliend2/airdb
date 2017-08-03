@@ -13,20 +13,33 @@ if (isset($_POST) && isset($_POST['view_name'])) {
 <h1>Views</h1>
 <div id="container"></div>
 <script >
-var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
-var tableData = <?php echo json_encode($db->get_values($tablename)); ?>;
+<?php
+$fields = $db->get_fields($tablename);
+$values = $db->get_values($tablename);
+?>
+<?php if ($values === false): ?>
+  <?php $table_exists = false; ?>
+  var tableExists = false;
+<?php else: ?>
+  <?php $table_exists = true; ?>
+  var tableExists = true;
+<?php endif; ?>
+var tableColumns = <?php echo json_encode($fields); ?>;
+var tableData = <?php echo json_encode($values); ?>;
 
 $(function(){
   ReactDOM.render(React.createElement(window.Table, {
     tableName: '<?php echo $tablename ?>',
     tableData: tableData,
     tableColumns: tableColumns,
-    isView: true
+    isView: true,
+    tableExists: tableExists
   }), $('#container')[0]);
 });
 
 </script>
 
+<?php if ($table_exists): ?>
 <h2>Modify this view</h2>
 <p><?php if (isset($_SESSION['success'])) { echo $_SESSION['success']; } ?></p>
 <div >
@@ -49,4 +62,5 @@ $(function(){
     </dl>
   </div>
 </div>
+<?php endif ?>
 <?php include './inc/footer.php'; ?>

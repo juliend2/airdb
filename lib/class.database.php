@@ -232,14 +232,24 @@ class DB {
     return $select;
   }
 
+  // if false, the table doesn't exist
   public function get_fields($tablename) {
-    $query = $this->_db->query("PRAGMA table_info('".$tablename."')");
-    return $query->fetchAll(PDO::FETCH_CLASS);
+    try {
+      $query = $this->_db->query("PRAGMA table_info('".$tablename."')");
+      return $query->fetchAll(PDO::FETCH_CLASS);
+    } catch (PDOException $e) {
+      return false;
+    }
   }
 
+  // if false, the table doesn't exist
   public function get_values($tablename) {
-    $query = $this->_db->query("SELECT * FROM ".$tablename."");
-    return $query->fetchAll(PDO::FETCH_CLASS);
+    try {
+      $query = $this->_db->query("SELECT * FROM ".$tablename."");
+      return $query->fetchAll(PDO::FETCH_CLASS);
+    } catch (PDOException $e) {
+      return false;
+    }
   }
 
   public function get_query($query) {

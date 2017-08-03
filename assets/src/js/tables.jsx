@@ -311,6 +311,8 @@ class Table extends React.Component {
     var k = 0;
     return (
       <div>
+        {this.state.tableExists ?
+          <div>
         <h2>Table: {
           this.state.editingTableName ?
             <input onKeyUp={this.handleTableNameKeyUp.bind(this)} defaultValue={this.state.tableName} type="text" /> :
@@ -425,7 +427,8 @@ class Table extends React.Component {
           <span></span> :
           <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
         }
-      </div>
+        </div>
+        : <p className="error">That table doesn't exist.</p>}</div>
     );
   }
 }
