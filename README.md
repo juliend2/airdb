@@ -2,14 +2,13 @@
 
 ## TODO
 
-* modify table name
+* draw links between tables/views in Diagram mode
 * add validation for integer type
 * add validation for float type
 * add validation for table/view names
 * outil d'import de données d'un fichier CSV vers une table
 * export view in readonly
 * better error reporting when a view creation fails (don't see the PHP error stuff)
-* in view creation/edition mode, we could choose a table/view to display its data to help us write a good query
 * (#view) reorder columns (for default view only)
 * (#view) reorder rows (maybe swap IDs in a transaction, or add an __ordering hidden field that contains it)
 * (#view) related rows (data type that allows to link to another field of another table) (always multiple; there's no point for has-one)
