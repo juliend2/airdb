@@ -1,6 +1,5 @@
 <?php require_once './lib/db.php'; ?>
 <?php include './inc/header.php'; ?>
-<h1>Tables</h1>
 <div id="container"></div>
 <script>
 <?php $tablename = $_GET['table']; ?>

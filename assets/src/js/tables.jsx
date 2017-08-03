@@ -1,4 +1,5 @@
 var fieldTypes = require('./constants.js').fieldTypes;
+var updateQueryString = require('./lib/helpers.js').updateQueryString;
 var _ = require('lodash');
 var React = require('react');
 
@@ -9,12 +10,14 @@ class Table extends React.Component {
     console.log('Table constructor', this.props.tableName, this.props.tableRows);
     this.state = {
       tableName: this.props.tableName,
+      tableNameTemp: '',
       tableRows: this.props.tableRows,
       tableColumns: this.props.tableColumns,
       editedCell: null,
       editingCol: null,
       displayAddColumn: false,
-      isView: this.props.isView
+      isView: this.props.isView,
+      editingTableName: false
     };
   }
 
@@ -274,13 +277,45 @@ class Table extends React.Component {
     this.setState({newColumnName: value});
   }
 
+  handleClickTableName(e) {
+    var value = e.target.innerHTML;
+    this.setState({
+      editingTableName: true
+    });
+    $(e.target).focus();
+  }
+
+  handleTableNameKeyUp(e) {
+    var value = e.target.value;
+    var code = e.which || e.keyCode;
+    if (code == 13) { // ENTER
+      console.log('handleTableNameKeyUp');
+      this.setState({
+        editingTableName: false
+      });
+      $.post('/?action=ajax_rename_table&table='+value, {
+        old_table_name: this.state.tableName,
+        table_name: this.state.tableNameTemp
+      }, (data, textStatus) => {
+        window.location.href = updateQueryString('table', this.state.tableNameTemp, window.location.href);
+      }, 'json');
+    } else {
+      this.setState({
+        tableNameTemp: value
+      });
+    }
+  }
+
   render() {
     var j = 0;
     var k = 0;
-    console.log('fieldTypes', fieldTypes);
     return (
       <div>
-        <h2>{this.state.tableName}</h2>
+        <h2>Table: {
+          this.state.editingTableName ?
+            <input onKeyUp={this.handleTableNameKeyUp.bind(this)} defaultValue={this.state.tableName} type="text" /> :
+            <span onClick={this.handleClickTableName.bind(this)}>{this.state.tableName}</span>
+        }</h2>
         <table className="table">
           <thead>
             <tr >

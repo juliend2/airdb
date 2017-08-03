@@ -36,6 +36,10 @@ class DB {
     $this->_sql .= 'CREATE TABLE IF NOT EXISTS '.$this->_tablename.' (id INTEGER PRIMARY KEY AUTOINCREMENT);';
   }
 
+  public function rename_table($old_name, $new_name) {
+    $this->_sql .= "ALTER TABLE '".$old_name."' RENAME TO '".$new_name."';";
+  }
+
   public function table_exists($tablename) {
     $sql = '';
     $describe_sql = "SELECT sql FROM sqlite_master WHERE name = '".$tablename."' ;";
