@@ -22451,7 +22451,8 @@ var Table = function (_React$Component) {
       editingCol: null,
       displayAddColumn: false,
       isView: _this.props.isView,
-      editingTableName: false
+      editingTableName: false,
+      tableExists: true // by default, we assume it exists, unless we provide a contrary value
     };
     return _this;
   }
