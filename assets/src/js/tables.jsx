@@ -13,6 +13,8 @@ class Table extends React.Component {
       tableNameTemp: '',
       tableRows: this.props.tableRows,
       tableColumns: this.props.tableColumns,
+      currentRowId: '',
+      currentColName: '',
       editedCell: null,
       editingCol: null,
       displayAddColumn: false,
@@ -226,6 +228,17 @@ class Table extends React.Component {
     });
   }
 
+  handleSelectCell(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var cell = e.target;
+    console.log('handleSelectCell', cell);
+    this.setState({
+      currentRowId: cell.dataset.rowid,
+      currentColName: cell.dataset.colname
+    });
+  }
+
   handleRemoveRow(e) {
     e.preventDefault();
     if (confirm('Are you sure?')) {
@@ -371,7 +384,13 @@ class Table extends React.Component {
                 k += 1;
                 return <tr key={k}>{this.state.tableColumns.map((col) => {
                   j += 1;
-                  return <td key={j} data-rowid={row.id} data-colname={col.name}>{
+                  return <td
+                    key={j}
+                    data-rowid={row.id}
+                    data-colname={col.name}
+                    className={row.id == this.state.currentRowId && col.name == this.state.currentColName ? 'current-cell-selected' : ''}
+                    onClick={this.handleSelectCell.bind(this)}>
+                    {
                     (()=>{
                       if (
                         (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) && col.type != 'bool'
@@ -413,7 +432,7 @@ class Table extends React.Component {
                             disabled={this.state.isView}
                             />;
                         } else {
-                          return <span className="data" onClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                          return <span className="data" onDoubleClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
                         }
                       }
                     })()

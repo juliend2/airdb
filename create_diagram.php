@@ -16,7 +16,7 @@ include './inc/header.php';
 ?>
 <h1>Create a diagram</h1>
 <form method="post" action="">
-  <p><label for="diagramname">Table name:</label><input type="text" name="diagram_name" id="diagramname" /></p>
+  <p><label for="diagramname">Diagram name:</label><input type="text" name="diagram_name" id="diagramname" /></p>
   <p><input type="submit"/></p>
 </form>
 <?php include './inc/footer.php'; ?>

@@ -22447,6 +22447,8 @@ var Table = function (_React$Component) {
       tableNameTemp: '',
       tableRows: _this.props.tableRows,
       tableColumns: _this.props.tableColumns,
+      currentRowId: '',
+      currentColName: '',
       editedCell: null,
       editingCol: null,
       displayAddColumn: false,
@@ -22687,6 +22689,18 @@ var Table = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleSelectCell',
+    value: function handleSelectCell(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var cell = e.target;
+      console.log('handleSelectCell', cell);
+      this.setState({
+        currentRowId: cell.dataset.rowid,
+        currentColName: cell.dataset.colname
+      });
+    }
+  }, {
     key: 'handleRemoveRow',
     value: function handleRemoveRow(e) {
       var _this9 = this;
@@ -22905,7 +22919,12 @@ var Table = function (_React$Component) {
                     j += 1;
                     return React.createElement(
                       'td',
-                      { key: j, 'data-rowid': row.id, 'data-colname': col.name },
+                      {
+                        key: j,
+                        'data-rowid': row.id,
+                        'data-colname': col.name,
+                        className: row.id == _this11.state.currentRowId && col.name == _this11.state.currentColName ? 'current-cell-selected' : '',
+                        onClick: _this11.handleSelectCell.bind(_this11) },
                       function () {
                         if ((row[col.name] == null || _this11.state.editedCell != null && col.name == _this11.state.editedCell.colName && row.id == _this11.state.editedCell.rowID) && col.type != 'bool') {
                           // input field for adding first value to cell
@@ -22949,7 +22968,7 @@ var Table = function (_React$Component) {
                           } else {
                             return React.createElement(
                               'span',
-                              { className: 'data', onClick: _this11.handleStartEditingCell.bind(_this11) },
+                              { className: 'data', onDoubleClick: _this11.handleStartEditingCell.bind(_this11) },
                               row[col.name]
                             );
                           }
