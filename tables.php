@@ -7,7 +7,7 @@
   <div class="failure"><?php echo $failure ?></div>
 <?php endif ?>
 <h1>Tables, Views & Diagrams</h1>
-<h2>Tables <small>[<a href="/create_table.php">New</a>]</small></h2>
+<h2>Tables <small>[<a href="/?action=create_table">New</a>]</small></h2>
 <ul>
 <?php
   foreach ($db->get_tables() as $key => $value) {
@@ -18,7 +18,7 @@
   }
 ?>
 </ul>
-<h2>Views <small>[<a href="/create_view.php">New</a>]</small></h2>
+<h2>Views <small>[<a href="/?action=create_view">New</a>]</small></h2>
 <ul>
 <?php
   foreach ($db->get_views() as $key => $value) {
@@ -29,7 +29,7 @@
   }
 ?>
 </ul>
-<H2>Diagrams <small>[<a href="/create_diagram.php">New</a>]</small></h2>
+<H2>Diagrams <small>[<a href="/?action=create_diagram">New</a>]</small></h2>
 <ul>
   <?php foreach ($db->get_query('select * from airdb___diagrams') as $diagram): ?>
     <li><a href="/?action=view_diagram&diagram=<?php echo $diagram->name ?>"><?php echo $diagram->name ?></a></li>
