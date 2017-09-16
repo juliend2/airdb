@@ -2,6 +2,7 @@ var fieldTypes = require('./constants.js').fieldTypes;
 var updateQueryString = require('./lib/helpers.js').updateQueryString;
 var _ = require('lodash');
 var React = require('react');
+var $ = require('jquery');
 
 class Table extends React.Component {
 
@@ -22,6 +23,28 @@ class Table extends React.Component {
       editingTableName: false,
       tableExists: true // by default, we assume it exists, unless we provide a contrary value
     };
+    window.addEventListener('copy', this.handleCopy.bind(this), false);
+  }
+
+  handleCopy(e) {
+    if (e instanceof ClipboardEvent) {
+      const selected = $('.current-cell-selected > .js-data');
+      if (selected.length > 0) {
+        const el = selected[0];
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+          console.log('Copying text command was ' + msg);
+        } catch (err) {
+          console.log('Oops, unable to copy');
+        }
+      }
+    }
   }
 
   handleAddRow(e) {
@@ -432,7 +455,7 @@ class Table extends React.Component {
                             disabled={this.state.isView}
                             />;
                         } else {
-                          return <span className="data" onDoubleClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                          return <span className="data  js-data" onDoubleClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
                         }
                       }
                     })()

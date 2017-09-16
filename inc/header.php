@@ -22,6 +22,7 @@ if (isset($_COOKIE['REAL_REFERER'])) {
   <title>Perso data</title>
   <link rel="stylesheet" href="/assets/dist/css/main.bundle.css"/>
   <script src="/assets/dist/js/jquery-3.2.1.min.js"></script>
+  <script src="/assets/dist/js/mousetrap.min.js"></script>
   <script src="/assets/dist/js/bundle.js"></script>
 </head>
 <body>
