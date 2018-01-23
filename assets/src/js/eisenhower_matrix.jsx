@@ -7,6 +7,7 @@ class MatrixItem extends React.Component {
     super(props);
     this.state = {
       id: this.props.id,
+      parent: this.props.parent,
       title: this.props.title,
       isImportant: this.props.isImportant,
       isUrgent: this.props.isUrgent,
@@ -15,10 +16,14 @@ class MatrixItem extends React.Component {
     };
   }
 
+  handleRemove(e) {
+    this.state.handleRemoveRow.apply(this.state.parent, [e]);
+  }
+
   render() {
     return <div className="matrix-item">
       {this.state.title}
-      <a href="#" data-rowid={this.state.id} onClick={this.state.handleRemoveRow.bind(this)}>Delete</a>
+      <a href="#" data-rowid={this.state.id} onClick={this.handleRemove.bind(this)}>Delete</a>
     </div>;
   }
 
@@ -44,9 +49,8 @@ export class EisenhowerMatrix extends React.Component {
       return !!parseInt(scalar, 10);
     };
     const item = (index, row) => {
-      console.log('this', this);
       return <MatrixItem
-        key={index} id={row.id} title={row.task_title} tableName={this.state.tableName}
+        parent={this} key={index} id={row.id} title={row.task_title} tableName={this.state.tableName}
         isImportant={toBool(row.is_important)} isUrgent={toBool(row.is_urgent)}
         handleRemoveRow={this.state.handleRemoveRow} />;
     };
@@ -102,6 +106,7 @@ EisenhowerMatrix.propType = {
 
 MatrixItem.propType = {
   id: React.PropTypes.number,
+  parent: React.PropTypes.object,
   tableName: React.PropTypes.string,
   title: React.PropTypes.string,
   isImportant: React.PropTypes.bool,

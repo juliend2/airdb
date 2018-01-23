@@ -53296,6 +53296,7 @@ var MatrixItem = function (_React$Component) {
 
     _this.state = {
       id: _this.props.id,
+      parent: _this.props.parent,
       title: _this.props.title,
       isImportant: _this.props.isImportant,
       isUrgent: _this.props.isUrgent,
@@ -53306,6 +53307,11 @@ var MatrixItem = function (_React$Component) {
   }
 
   _createClass(MatrixItem, [{
+    key: 'handleRemove',
+    value: function handleRemove(e) {
+      this.state.handleRemoveRow.apply(this.state.parent, [e]);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
@@ -53314,7 +53320,7 @@ var MatrixItem = function (_React$Component) {
         this.state.title,
         React.createElement(
           'a',
-          { href: '#', 'data-rowid': this.state.id, onClick: this.state.handleRemoveRow.bind(this) },
+          { href: '#', 'data-rowid': this.state.id, onClick: this.handleRemove.bind(this) },
           'Delete'
         )
       );
@@ -53353,9 +53359,8 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
         return !!parseInt(scalar, 10);
       };
       var item = function item(index, row) {
-        console.log('this', _this3);
         return React.createElement(MatrixItem, {
-          key: index, id: row.id, title: row.task_title, tableName: _this3.state.tableName,
+          parent: _this3, key: index, id: row.id, title: row.task_title, tableName: _this3.state.tableName,
           isImportant: toBool(row.is_important), isUrgent: toBool(row.is_urgent),
           handleRemoveRow: _this3.state.handleRemoveRow });
       };
@@ -53424,6 +53429,7 @@ EisenhowerMatrix.propType = {
 
 MatrixItem.propType = {
   id: React.PropTypes.number,
+  parent: React.PropTypes.object,
   tableName: React.PropTypes.string,
   title: React.PropTypes.string,
   isImportant: React.PropTypes.bool,
