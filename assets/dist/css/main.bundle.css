@@ -450,3 +450,43 @@ body {
   color: black;
   cursor: pointer;
 }
+.eisenhower-matrix {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+.eisenhower-matrix .eisenhower-cell {
+  width: 50%;
+  min-height: 100px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+.eisenhower-matrix .matrix-item {
+  border-radius: 3px;
+  margin-bottom: 2px;
+  padding: 3px;
+}
+.eisenhower-matrix .eisenhower-cell__important-urgent {
+  background: #FF3636;
+}
+.eisenhower-matrix .eisenhower-cell__important-urgent .matrix-item {
+  background: #ffcfcf;
+}
+.eisenhower-matrix .eisenhower-cell__important-noturgent {
+  background: #9BFF36;
+}
+.eisenhower-matrix .eisenhower-cell__important-noturgent .matrix-item {
+  background: #e7ffcf;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-urgent {
+  background: #FFAB36;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-urgent .matrix-item {
+  background: #ffebcf;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-noturgent {
+  background: #36FFFF;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-noturgent .matrix-item {
+  background: #cfffff;
+}

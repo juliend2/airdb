@@ -9780,16 +9780,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 __webpack_require__(193);
 
-// ReactDOM.render(
-//   <Table
-//     tableName="joie"
-//     tableRows={['joie']}
-//     tableColumns={['id']}
-//     isView={false}
-//     />,
-//   document.getElementById('container')
-// );
-
 window.React = _react2.default;
 window.ReactDOM = _reactDom2.default;
 // window.Table = Table;
@@ -22429,6 +22419,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var fieldTypes = __webpack_require__(185).fieldTypes;
+var EisenhowerMatrix = __webpack_require__(197).EisenhowerMatrix;
 var updateQueryString = __webpack_require__(186).updateQueryString;
 var _ = __webpack_require__(187);
 var React = __webpack_require__(24);
@@ -22440,11 +22431,12 @@ var Table = function (_React$Component) {
   function Table(props) {
     _classCallCheck(this, Table);
 
+    //console.log('Table constructor', this.props.tableName, this.props.tableRows);
     var _this = _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
 
-    console.log('Table constructor', _this.props.tableName, _this.props.tableRows);
     _this.state = {
       tableName: _this.props.tableName,
+      viewType: _this.props.viewType,
       tableNameTemp: '',
       tableRows: _this.props.tableRows,
       tableColumns: _this.props.tableColumns,
@@ -22732,16 +22724,20 @@ var Table = function (_React$Component) {
       e.preventDefault();
       if (confirm('Are you sure?')) {
         var rowID = $(e.target).data('rowid');
-        $.post('/?action=ajax_remove_row&table=' + this.state.tableName, {
-          row_id: rowID
-        }, function (data) {
-          var newRows = _.reject(_this9.state.tableRows, function (row) {
-            return row.id == rowID;
-          });
-          _this9.setState({
-            tableRows: newRows
-          });
-        }, 'json');
+        if (this.state.hasOwnProperty('tableName')) {
+          $.post('/?action=ajax_remove_row&table=' + this.state.tableName, {
+            row_id: rowID
+          }, function (data) {
+            var newRows = _.reject(_this9.state.tableRows, function (row) {
+              return row.id == rowID;
+            });
+            _this9.setState({
+              tableRows: newRows
+            });
+          }, 'json');
+        } else {
+          debugger;
+        }
       }
     }
 
@@ -22818,12 +22814,40 @@ var Table = function (_React$Component) {
       }
     }
   }, {
+    key: 'handleViewTypeChange',
+    value: function handleViewTypeChange(e) {
+      var value = e.target.value;
+      this.setState({
+        viewType: value
+      });
+    }
+  }, {
+    key: 'anotherViewType',
+    value: function anotherViewType(viewType) {
+      console.log('anotherViewType');
+      switch (viewType) {
+        case 'eisenhower-matrix':
+          console.log('anotherViewType: eisenhower-matrix');
+          return React.createElement(EisenhowerMatrix, { tableName: this.state.tableName, tableRows: this.state.tableRows,
+            tableColumns: this.state.tableColumns, viewType: this.state.viewType, isView: this.state.viewType, handleRemoveRow: this.handleRemoveRow });
+        default:
+          return React.createElement(
+            'p',
+            null,
+            'The \'',
+            viewType,
+            '\' view type is not implemented.'
+          );
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this11 = this;
 
       var j = 0;
       var k = 0;
+      var viewTypes = [{ name: 'Table', slug: 'table' }, { name: 'Eisenhower Matrix', slug: 'eisenhower-matrix' }];
       return React.createElement(
         'div',
         null,
@@ -22841,6 +22865,21 @@ var Table = function (_React$Component) {
             )
           ),
           React.createElement(
+            'div',
+            { className: 'view-type-chooser' },
+            React.createElement(
+              'select',
+              { name: 'view_type', id: 'view_type', value: this.state.viewType, onChange: this.handleViewTypeChange.bind(this) },
+              _.map(viewTypes, function (viewType, index) {
+                return React.createElement(
+                  'option',
+                  { value: viewType.slug, key: index },
+                  viewType.name
+                );
+              })
+            )
+          ),
+          this.state.viewType == 'table' ? React.createElement(
             'table',
             { className: 'table' },
             React.createElement(
@@ -23029,7 +23068,7 @@ var Table = function (_React$Component) {
                 )
               )
             )
-          ),
+          ) : this.anotherViewType(this.state.viewType),
           this.state.isView ? React.createElement('span', null) : React.createElement(
             'a',
             { href: '#', onClick: this.handleAddRow.bind(this) },
@@ -23054,7 +23093,8 @@ Table.propType = {
   editedCell: React.PropTypes.object,
   editingCol: React.PropTypes.string,
   displayAddColumn: React.PropTypes.bool,
-  isView: React.PropTypes.bool
+  isView: React.PropTypes.bool,
+  viewType: React.PropTypes.string
 };
 
 window.Table = Table;
@@ -53220,6 +53260,178 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(24);
+var _ = __webpack_require__(187);
+
+var MatrixItem = function (_React$Component) {
+  _inherits(MatrixItem, _React$Component);
+
+  function MatrixItem(props) {
+    _classCallCheck(this, MatrixItem);
+
+    var _this = _possibleConstructorReturn(this, (MatrixItem.__proto__ || Object.getPrototypeOf(MatrixItem)).call(this, props));
+
+    _this.state = {
+      id: _this.props.id,
+      title: _this.props.title,
+      isImportant: _this.props.isImportant,
+      isUrgent: _this.props.isUrgent,
+      tableName: _this.props.tableName,
+      handleRemoveRow: _this.props.handleRemoveRow
+    };
+    return _this;
+  }
+
+  _createClass(MatrixItem, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        { className: 'matrix-item' },
+        this.state.title,
+        React.createElement(
+          'a',
+          { href: '#', 'data-rowid': this.state.id, onClick: this.state.handleRemoveRow.bind(this) },
+          'Delete'
+        )
+      );
+    }
+  }]);
+
+  return MatrixItem;
+}(React.Component);
+
+var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
+  _inherits(EisenhowerMatrix, _React$Component2);
+
+  function EisenhowerMatrix(props) {
+    _classCallCheck(this, EisenhowerMatrix);
+
+    var _this2 = _possibleConstructorReturn(this, (EisenhowerMatrix.__proto__ || Object.getPrototypeOf(EisenhowerMatrix)).call(this, props));
+
+    console.log('EisenhowerMatrix');
+    _this2.state = {
+      tableName: _this2.props.tableName,
+      tableRows: _this2.props.tableRows,
+      tableColumns: _this2.props.tableColumns,
+      viewType: _this2.props.viewType,
+      isView: _this2.props.isView,
+      handleRemoveRow: _this2.props.handleRemoveRow
+    };
+    return _this2;
+  }
+
+  _createClass(EisenhowerMatrix, [{
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var toBool = function toBool(scalar) {
+        return !!parseInt(scalar, 10);
+      };
+      var item = function item(index, row) {
+        console.log('this', _this3);
+        return React.createElement(MatrixItem, {
+          key: index, id: row.id, title: row.task_title, tableName: _this3.state.tableName,
+          isImportant: toBool(row.is_important), isUrgent: toBool(row.is_urgent),
+          handleRemoveRow: _this3.state.handleRemoveRow });
+      };
+      return React.createElement(
+        'div',
+        { className: 'eisenhower-matrix' },
+        React.createElement(
+          'div',
+          { className: 'eisenhower-cell  eisenhower-cell__important-urgent' },
+          _.map(this.state.tableRows, function (row, index) {
+            if (row.is_important && row.is_urgent) {
+              return item(index, row);
+            } else {
+              return null;
+            }
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'eisenhower-cell  eisenhower-cell__important-noturgent' },
+          _.map(this.state.tableRows, function (row, index) {
+            if (row.is_important && !row.is_urgent) {
+              return item(index, row);
+            } else {
+              return null;
+            }
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'eisenhower-cell  eisenhower-cell__notimportant-urgent' },
+          _.map(this.state.tableRows, function (row, index) {
+            if (!row.is_important && row.is_urgent) {
+              return item(index, row);
+            } else {
+              return null;
+            }
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'eisenhower-cell  eisenhower-cell__notimportant-noturgent' },
+          _.map(this.state.tableRows, function (row, index) {
+            if (!row.is_important && !row.is_urgent) {
+              return item(index, row);
+            } else {
+              return null;
+            }
+          })
+        )
+      );
+    }
+  }]);
+
+  return EisenhowerMatrix;
+}(React.Component);
+
+EisenhowerMatrix.propType = {
+  tableName: React.PropTypes.string,
+  tableRows: React.PropTypes.array,
+  tableColumns: React.PropTypes.array,
+  isView: React.PropTypes.bool,
+  viewType: React.PropTypes.string,
+  handleRemoveRow: React.PropTypes.func
+};
+
+MatrixItem.propType = {
+  id: React.PropTypes.number,
+  tableName: React.PropTypes.string,
+  title: React.PropTypes.string,
+  isImportant: React.PropTypes.bool,
+  isUrgent: React.PropTypes.bool,
+  handleRemoveRow: React.PropTypes.func
+};
+
+window.EisenhowerMatrix = EisenhowerMatrix;
 
 /***/ })
 /******/ ]);

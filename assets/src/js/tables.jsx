@@ -1,4 +1,5 @@
 var fieldTypes = require('./constants.js').fieldTypes;
+const EisenhowerMatrix = require('./eisenhower_matrix.jsx').EisenhowerMatrix;
 var updateQueryString = require('./lib/helpers.js').updateQueryString;
 var _ = require('lodash');
 var React = require('react');
@@ -8,9 +9,10 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('Table constructor', this.props.tableName, this.props.tableRows);
+    //console.log('Table constructor', this.props.tableName, this.props.tableRows);
     this.state = {
       tableName: this.props.tableName,
+      viewType: this.props.viewType,
       tableNameTemp: '',
       tableRows: this.props.tableRows,
       tableColumns: this.props.tableColumns,
@@ -266,16 +268,20 @@ class Table extends React.Component {
     e.preventDefault();
     if (confirm('Are you sure?')) {
       var rowID = $(e.target).data('rowid');
-      $.post('/?action=ajax_remove_row&table='+this.state.tableName, {
-        row_id: rowID
-      }, (data)=>{
-        var newRows = _.reject(this.state.tableRows, (row)=>{
-          return row.id == rowID;
-        });
-        this.setState({
-          tableRows: newRows
-        });
-      }, 'json');
+      if (this.state.hasOwnProperty('tableName')) {
+        $.post('/?action=ajax_remove_row&table='+this.state.tableName, {
+          row_id: rowID
+        }, (data)=>{
+          var newRows = _.reject(this.state.tableRows, (row)=>{
+            return row.id == rowID;
+          });
+          this.setState({
+            tableRows: newRows
+          });
+        }, 'json');
+      } else {
+        debugger;
+      }
     }
   }
 
@@ -343,9 +349,32 @@ class Table extends React.Component {
     }
   }
 
+  handleViewTypeChange(e) {
+    var value = e.target.value;
+    this.setState({
+      viewType: value
+    });
+  }
+
+  anotherViewType(viewType) {
+    console.log('anotherViewType');
+    switch (viewType) {
+      case 'eisenhower-matrix':
+        console.log('anotherViewType: eisenhower-matrix');
+        return <EisenhowerMatrix tableName={this.state.tableName} tableRows={this.state.tableRows}
+                  tableColumns={this.state.tableColumns} viewType={this.state.viewType} isView={this.state.viewType} handleRemoveRow={this.handleRemoveRow} />;
+      default:
+        return <p>The '{viewType}' view type is not implemented.</p>;
+    }
+  }
+
   render() {
     var j = 0;
     var k = 0;
+    var viewTypes = [
+      {name: 'Table', slug: 'table'},
+      {name: 'Eisenhower Matrix', slug: 'eisenhower-matrix'}
+    ];
     return (
       <div>
         {this.state.tableExists ?
@@ -355,126 +384,138 @@ class Table extends React.Component {
               <input onKeyUp={this.handleTableNameKeyUp.bind(this)} defaultValue={this.state.tableName} type="text" /> :
               <span onClick={this.handleClickTableName.bind(this)}>{this.state.tableName}</span>
           }</h2>
-          <table className="table">
-            <thead>
-              <tr >
-                {_.map(this.state.tableColumns, (column, i) => {
-                  return <th key={i}>
-                    { column.name == this.state.editingCol ? <input type="text" name="rowname" onBlur={this.handleStopEditingColumn.bind(this)} defaultValue={column.name}/> : column.name}
-                    { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleStartEditingColumn.bind(this)}>✎</a>}
-                    { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a> }
-                    </th>;
-                })}
-                <th id="add-column-th">
-                  <a id="js-add-column" href="#" onClick={this.handleDisplayAddColumn.bind(this)}>Add a column</a>
-                  <div id="js-add-column-box" style={{display: this.state.displayAddColumn ? 'block' : 'none'}}>
-                    <form action="#" method="post" onSubmit={this.handleAddColumn.bind(this)}>
-                    <p>
-                      <input
-                        type="text"
-                        id="column_name"
-                        name="name"
-                        onChange={this.handleNewColumnNameChange.bind(this)}
-                        value={this.state.newColumnName}
-                        ref='fieldname'
-                        placeholder="Name of the column" />
-                      <span className={((fields)=>{
-                                        fields.push(this.state.newColumnNameError ? 'block' : 'hidden');
-                                        return fields.join(' ');
-                                      })(['error'])}>
-                        {this.state.newColumnNameError}
-                      </span>
-                    </p>
-                    <p>
-                      <label htmlFor="column_type">Data Type:</label>
-                      <select name="type" id="column_type">
-                      {_.map(fieldTypes, (fieldType, index)=> {
-                        return <option value={fieldType.slug} key={index}>{fieldType.name}</option>;
-                      })}
-                      </select>
-                    </p>
-                    <p>
-                      <input type="submit" value="Add" />
-                    </p>
-                    </form>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.tableRows ? this.state.tableRows.map((row) => {
-                j = 0;
-                k += 1;
-                return <tr key={k}>{this.state.tableColumns.map((col) => {
-                  j += 1;
-                  return <td
-                    key={j}
-                    data-rowid={row.id}
-                    data-colname={col.name}
-                    className={row.id == this.state.currentRowId && col.name == this.state.currentColName ? 'current-cell-selected' : ''}
-                    onClick={this.handleSelectCell.bind(this)}>
-                    {
-                    (()=>{
-                      if (
-                      (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID))
-                      ) {
-                        // input field for adding first value to cell
-                        return <span className={"datatype-"+ col.type}>{
-                            ((colType) => {
-                              switch (colType) {
-                                case 'datetime':
-                                  return <Datetime
-                                    inputProps={{
-                                      name: col.name,
-                                      'data-rowid': row.id,
-                                      'data-colname': col.name
-                                    }}
-                                    onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}}
-                                    onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />;
-                                case 'bool':
-                                  return <input
-                                    type="checkbox"
-                                    name={col.name}
-                                    value={row[col.name] ? 'on' : 'off'}
-                                    checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
-                                    onChange={this.handleBooleanChange.bind(this)}
-                                    disabled={this.state.isView}
-                                    />;
-                                default:
-                                  return <input
-                                    type="text"
-                                    name={col.name}
-                                    autoFocus
-                                    onBlur={this.handleInputModified.bind(this)}
-                                    defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />;
-                              }
-                            })(col.type)
-                          }
-                          </span>;
+          <div className="view-type-chooser">
+            <select name="view_type" id="view_type" value={this.state.viewType} onChange={this.handleViewTypeChange.bind(this)}>
+              {_.map(viewTypes, (viewType, index)=> {
+                return <option value={viewType.slug} key={index}>{viewType.name}</option>;
+              })}
+            </select>
+          </div>
+          {this.state.viewType == 'table' ? (
+            <table className="table">
+              <thead>
+                <tr >
+                  {_.map(this.state.tableColumns, (column, i) => {
+                    return <th key={i}>
+                      { column.name == this.state.editingCol ? <input type="text" name="rowname" onBlur={this.handleStopEditingColumn.bind(this)} defaultValue={column.name}/> : column.name}
+                      { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleStartEditingColumn.bind(this)}>✎</a>}
+                      { column.name == 'id' || this.state.isView ? <span></span> : <a href="#" data-colname={column.name} onClick={this.handleRemoveColumn.bind(this)}>✕</a> }
+                      </th>;
+                  })}
+                  <th id="add-column-th">
+                    <a id="js-add-column" href="#" onClick={this.handleDisplayAddColumn.bind(this)}>Add a column</a>
+                    <div id="js-add-column-box" style={{display: this.state.displayAddColumn ? 'block' : 'none'}}>
+                      <form action="#" method="post" onSubmit={this.handleAddColumn.bind(this)}>
+                      <p>
+                        <input
+                          type="text"
+                          id="column_name"
+                          name="name"
+                          onChange={this.handleNewColumnNameChange.bind(this)}
+                          value={this.state.newColumnName}
+                          ref='fieldname'
+                          placeholder="Name of the column" />
+                        <span className={((fields)=>{
+                                          fields.push(this.state.newColumnNameError ? 'block' : 'hidden');
+                                          return fields.join(' ');
+                                        })(['error'])}>
+                          {this.state.newColumnNameError}
+                        </span>
+                      </p>
+                      <p>
+                        <label htmlFor="column_type">Data Type:</label>
+                        <select name="type" id="column_type">
+                        {_.map(fieldTypes, (fieldType, index)=> {
+                          return <option value={fieldType.slug} key={index}>{fieldType.name}</option>;
+                        })}
+                        </select>
+                      </p>
+                      <p>
+                        <input type="submit" value="Add" />
+                      </p>
+                      </form>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.tableRows ? this.state.tableRows.map((row) => {
+                  j = 0;
+                  k += 1;
+                  return <tr key={k}>{this.state.tableColumns.map((col) => {
+                    j += 1;
+                    return <td
+                      key={j}
+                      data-rowid={row.id}
+                      data-colname={col.name}
+                      className={row.id == this.state.currentRowId && col.name == this.state.currentColName ? 'current-cell-selected' : ''}
+                      onClick={this.handleSelectCell.bind(this)}>
+                      {
+                      (()=>{
+                        if (
+                        (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID))
+                        ) {
+                          // input field for adding first value to cell
+                          return <span className={"datatype-"+ col.type}>{
+                              ((colType) => {
+                                switch (colType) {
+                                  case 'datetime':
+                                    return <Datetime
+                                      inputProps={{
+                                        name: col.name,
+                                        'data-rowid': row.id,
+                                        'data-colname': col.name
+                                      }}
+                                      onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}}
+                                      onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />;
+                                  case 'bool':
+                                    return <input
+                                      type="checkbox"
+                                      name={col.name}
+                                      value={row[col.name] ? 'on' : 'off'}
+                                      checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
+                                      onChange={this.handleBooleanChange.bind(this)}
+                                      disabled={this.state.isView}
+                                      />;
+                                  default:
+                                    return <input
+                                      type="text"
+                                      name={col.name}
+                                      autoFocus
+                                      onBlur={this.handleInputModified.bind(this)}
+                                      defaultValue={row && row.hasOwnProperty(col.name) ? row[col.name] : ''} />;
+                                }
+                              })(col.type)
+                            }
+                            </span>;
 
-                      } else {
-                        // display value
-                        if (col.type == 'bool') {
-                          return <input
-                            type="checkbox"
-                            name={col.name}
-                            value={row[col.name] ? 'on' : 'off'}
-                            checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
-                            onChange={this.handleBooleanChange.bind(this)}
-                            disabled={this.state.isView}
-                            />;
                         } else {
-                          return <span className="data  js-data" onDoubleClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                          // display value
+                          if (col.type == 'bool') {
+                            return <input
+                              type="checkbox"
+                              name={col.name}
+                              value={row[col.name] ? 'on' : 'off'}
+                              checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
+                              onChange={this.handleBooleanChange.bind(this)}
+                              disabled={this.state.isView}
+                              />;
+                          } else {
+                            return <span className="data  js-data" onDoubleClick={this.handleStartEditingCell.bind(this)}>{row[col.name]}</span>;
+                          }
                         }
-                      }
-                    })()
-                  }</td>;
-                })}
-                <td><a href="#" data-rowid={row.id} onClick={this.handleRemoveRow.bind(this)}>Delete</a></td>
-                </tr>;
-              }) : <tr ><td>{typeof this.state.tableRows}</td></tr>}
-            </tbody>
-          </table>
+                      })()
+                    }</td>;
+                  })}
+                  <td><a href="#" data-rowid={row.id} onClick={this.handleRemoveRow.bind(this)}>Delete</a></td>
+                  </tr>;
+                }) : <tr ><td>{typeof this.state.tableRows}</td></tr>}
+              </tbody>
+            </table>
+            ) : (
+              this.anotherViewType(this.state.viewType)
+            )
+          }
           {this.state.isView ?
             <span></span> :
             <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
@@ -493,7 +534,8 @@ Table.propType = {
   editedCell: React.PropTypes.object,
   editingCol: React.PropTypes.string,
   displayAddColumn: React.PropTypes.bool,
-  isView: React.PropTypes.bool
+  isView: React.PropTypes.bool,
+  viewType: React.PropTypes.string
 };
 
 

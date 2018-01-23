@@ -131,3 +131,52 @@ body {
   cursor: pointer;
 }
 
+.eisenhower-matrix {
+  @red: #FF3636;
+  @green: #9BFF36;
+  @orange: #FFAB36;
+  @blue: #36FFFF;
+
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+
+  .eisenhower-cell {
+    width: 50%;
+    min-height: 100px;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+
+  .matrix-item {
+    border-radius: 3px;
+    margin-bottom: 2px;
+    padding: 3px;
+  }
+
+  .eisenhower-cell__important-urgent {
+    background: @red;
+    .matrix-item {
+      background: lighten(@red, 30%);
+    }
+  }
+  .eisenhower-cell__important-noturgent {
+    background: @green;
+    .matrix-item {
+      background: lighten(@green, 30%);
+    }
+  }
+  .eisenhower-cell__notimportant-urgent {
+    background: @orange;
+    .matrix-item {
+      background: lighten(@orange, 30%);
+    }
+  }
+  .eisenhower-cell__notimportant-noturgent {
+    background: @blue;
+    .matrix-item {
+      background: lighten(@blue, 30%);
+    }
+  }
+
+}

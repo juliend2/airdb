@@ -4,6 +4,7 @@
 <script>
 <?php $tablename = $_GET['table']; ?>
 var tableColumns = <?php echo json_encode($db->get_fields($tablename)); ?>;
+var tableColumnNames = tableColumns.map(function(column){ return column.name; });
 var tableRows = <?php echo json_encode($db->get_values($tablename)); ?>;
 
 $(function(){
@@ -15,7 +16,8 @@ $(function(){
     tableName: '<?php echo $tablename ?>',
     tableRows: tableRows,
     tableColumns: tableColumns,
-    isView: false
+    isView: false,
+    viewType: tableColumnNames.includes('is_important') && tableColumnNames.includes('is_urgent') && tableColumnNames.includes('task_title') ? 'eisenhower-matrix' : 'table'
   }), document.getElementById('container'));
 });
 </script>
