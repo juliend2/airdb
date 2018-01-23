@@ -416,7 +416,7 @@ class Table extends React.Component {
                     {
                     (()=>{
                       if (
-                        (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID)) && col.type != 'bool'
+                      (row[col.name] == null || (this.state.editedCell != null && col.name == this.state.editedCell.colName && row.id == this.state.editedCell.rowID))
                       ) {
                         // input field for adding first value to cell
                         return <span className={"datatype-"+ col.type}>{
@@ -431,6 +431,15 @@ class Table extends React.Component {
                                     }}
                                     onFocus={ (e)=>{ this.setState({currentRowID: row.id, currentColName: col.name})}}
                                     onBlur={this.handleInputModified.bind(this)} locale="fr-ca" />;
+                                case 'bool':
+                                  return <input
+                                    type="checkbox"
+                                    name={col.name}
+                                    value={row[col.name] ? 'on' : 'off'}
+                                    checked={row[col.name] && parseInt(row[col.name], 10) > 0 }
+                                    onChange={this.handleBooleanChange.bind(this)}
+                                    disabled={this.state.isView}
+                                    />;
                                 default:
                                   return <input
                                     type="text"
