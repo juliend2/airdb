@@ -22412,6 +22412,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -23101,9 +23103,25 @@ var Table = function (_React$Component) {
         ),
         React.createElement(ItemForm, {
           id: this.state.editingTableRowID,
+          parent: this,
           tableColumns: this.state.tableColumns,
           tableRow: this.state.editingTableRow,
           isVisible: this.state.formIsVisible,
+          handleFormVisibilityChange: function handleFormVisibilityChange(visible) {
+            _this11.setState({
+              formIsVisible: visible
+            });
+          },
+          handleFormValueChange: function handleFormValueChange(e) {
+            var val = e.target.value;
+            if (e.target.type == 'checkbox') {
+              console.log('type', e.target.type);
+              val = e.target.value == 'on' ? 1 : 0;
+              val = val ? 0 : 1; // invert
+            }
+            console.log('name', e.target.name, 'value', val);
+            _this11.setState(_defineProperty({}, e.target.name, val));
+          },
           mode: 'edit' })
       );
     }
@@ -53526,11 +53544,20 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
 
     _this.state = {
       id: _this.props.id,
+      parent: _this.props.parent,
       //tableName: this.props.tableName,
       tableRow: _this.props.tableRow,
       mode: _this.props.mode, // 'edit' or 'new'
       tableColumns: _this.props.tableColumns,
-      isVisible: _this.props.isVisible
+      isVisible: _this.props.isVisible,
+      handleFormVisibilityChange: _this.props.handleFormVisibilityChange
+    };
+    _this.fieldTypes = {
+      'bool': 'checkbox',
+      'string': 'text',
+      'float': 'number',
+      'INTEGER': 'number',
+      'datetime': 'datetime-local'
     };
     return _this;
   }
@@ -53542,36 +53569,69 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
       console.log('submit!');
     }
   }, {
+    key: 'handleClose',
+    value: function handleClose(e) {
+      e.preventDefault();
+      this.state.handleFormVisibilityChange(false);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      return React.createElement(
+      return this.props.isVisible ? React.createElement(
         'div',
         {
-          className: 'item-form-container',
+          className: 'item-form',
           style: { display: this.props.isVisible ? 'block' : 'none' },
           'data-id': this.state.id },
         React.createElement(
+          'a',
+          { href: '#', className: 'item-form__close', onClick: this.handleClose.bind(this) },
+          '\xD7'
+        ),
+        React.createElement(
           'form',
-          { action: '#', className: 'item-form', onSubmit: this.handleSubmit.bind(this) },
+          { action: '#', className: 'item-form__form', onSubmit: this.handleSubmit.bind(this) },
           this.state.tableColumns.map(function (col, index) {
             console.log(_this2.state.tableRow, _this2.props.tableRow, col);
             if (col.name == 'id') {
               return React.createElement('input', { key: index, type: 'hidden', name: 'id' });
             } else {
-              return React.createElement(
-                'p',
-                { key: index },
-                col.name,
-                ' : ',
-                _this2.props.tableRow[col.name]
-              );
+              switch (col.type) {
+                case 'bool':
+                  return React.createElement(
+                    'p',
+                    { key: index },
+                    col.name,
+                    ' :',
+                    React.createElement('input', {
+                      name: col.name,
+                      type: _this2.fieldTypes[col.type],
+                      value: _this2.props.tableRow[col.name] ? 'on' : 'off',
+                      checked: _this2.props.tableRow[col.name] && parseInt(_this2.props.tableRow[col.name], 10) > 0,
+                      onChange: _this2.props.parent.handleBooleanChange.bind(_this2.props.parent)
+                    })
+                  );
+                default:
+                  return React.createElement(
+                    'p',
+                    { key: index },
+                    col.name,
+                    ' :',
+                    React.createElement('input', {
+                      name: col.name,
+                      type: _this2.fieldTypes[col.type],
+                      value: _this2.props.tableRow[col.name],
+                      onChange: _this2.props.handleFormValueChange.bind(_this2)
+                    })
+                  );
+              }
             }
           }),
           React.createElement('input', { type: 'submit', value: this.state.mode == 'edit' ? 'Update' : 'Create', name: 'submit' })
         )
-      );
+      ) : React.createElement('div', null);
     }
   }]);
 

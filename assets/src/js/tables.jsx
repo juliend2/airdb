@@ -542,9 +542,27 @@ class Table extends React.Component {
 
         <ItemForm
           id={this.state.editingTableRowID}
+          parent={this}
           tableColumns={this.state.tableColumns}
           tableRow={this.state.editingTableRow}
           isVisible={this.state.formIsVisible}
+          handleFormVisibilityChange={(visible)=>{
+            this.setState({
+              formIsVisible: visible
+            });
+          }}
+          handleFormValueChange={(e)=>{
+            var val = e.target.value;
+            if (e.target.type == 'checkbox') {
+              console.log('type', e.target.type);
+              val = e.target.value == 'on' ? 1 : 0;
+              val = val ? 0 : 1; // invert
+            }
+            console.log('name', e.target.name, 'value', val);
+            this.setState({
+              [e.target.name]: val
+            });
+          }}
           mode='edit' />
       </div>
     );
