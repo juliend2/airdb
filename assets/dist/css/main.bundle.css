@@ -465,6 +465,10 @@ body {
   border-radius: 3px;
   margin-bottom: 2px;
   padding: 3px;
+  display: flex;
+}
+.eisenhower-matrix .matrix-item__text {
+  width: calc(100% - 15px);
 }
 .eisenhower-matrix .eisenhower-cell__important-urgent {
   background: #FF3636;
@@ -472,11 +476,23 @@ body {
 .eisenhower-matrix .eisenhower-cell__important-urgent .matrix-item {
   background: #ffcfcf;
 }
+.eisenhower-matrix .eisenhower-cell__important-urgent .matrix-item__delete {
+  background: #FF3636;
+}
+.eisenhower-matrix .eisenhower-cell__important-urgent .matrix-item__delete:hover {
+  outline: 1px solid #FF3636;
+}
 .eisenhower-matrix .eisenhower-cell__important-noturgent {
   background: #9BFF36;
 }
 .eisenhower-matrix .eisenhower-cell__important-noturgent .matrix-item {
   background: #e7ffcf;
+}
+.eisenhower-matrix .eisenhower-cell__important-noturgent .matrix-item__delete {
+  background: #9BFF36;
+}
+.eisenhower-matrix .eisenhower-cell__important-noturgent .matrix-item__delete:hover {
+  outline: 1px solid #9BFF36;
 }
 .eisenhower-matrix .eisenhower-cell__notimportant-urgent {
   background: #FFAB36;
@@ -484,9 +500,38 @@ body {
 .eisenhower-matrix .eisenhower-cell__notimportant-urgent .matrix-item {
   background: #ffebcf;
 }
+.eisenhower-matrix .eisenhower-cell__notimportant-urgent .matrix-item__delete {
+  background: #FFAB36;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-urgent .matrix-item__delete:hover {
+  outline: 1px solid #FFAB36;
+}
 .eisenhower-matrix .eisenhower-cell__notimportant-noturgent {
   background: #36FFFF;
 }
 .eisenhower-matrix .eisenhower-cell__notimportant-noturgent .matrix-item {
   background: #cfffff;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-noturgent .matrix-item__delete {
+  background: #36FFFF;
+}
+.eisenhower-matrix .eisenhower-cell__notimportant-noturgent .matrix-item__delete:hover {
+  outline: 1px solid #36FFFF;
+}
+.eisenhower-matrix .matrix-item__edit,
+.eisenhower-matrix .matrix-item__delete {
+  width: 15px;
+  height: 15px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  margin-left: 2px;
+}
+.eisenhower-matrix .matrix-item__edit:hover,
+.eisenhower-matrix .matrix-item__delete:hover {
+  background: white !important;
+  color: black;
+}
+.eisenhower-matrix .matrix-item__edit {
+  color: black;
 }

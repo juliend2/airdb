@@ -152,12 +152,22 @@ body {
     border-radius: 3px;
     margin-bottom: 2px;
     padding: 3px;
+    display: flex;
   }
+    .matrix-item__text {
+      width: ~"calc(100% - 15px)";
+    }
 
   .eisenhower-cell__important-urgent {
     background: @red;
     .matrix-item {
       background: lighten(@red, 30%);
+    }
+    .matrix-item__delete {
+      background: @red;
+      &:hover {
+        outline: 1px solid @red;
+      }
     }
   }
   .eisenhower-cell__important-noturgent {
@@ -165,11 +175,23 @@ body {
     .matrix-item {
       background: lighten(@green, 30%);
     }
+    .matrix-item__delete {
+      background: @green;
+      &:hover {
+        outline: 1px solid @green;
+      }
+    }
   }
   .eisenhower-cell__notimportant-urgent {
     background: @orange;
     .matrix-item {
       background: lighten(@orange, 30%);
+    }
+    .matrix-item__delete {
+      background: @orange;
+      &:hover {
+        outline: 1px solid @orange;
+      }
     }
   }
   .eisenhower-cell__notimportant-noturgent {
@@ -177,6 +199,29 @@ body {
     .matrix-item {
       background: lighten(@blue, 30%);
     }
+    .matrix-item__delete {
+      background: @blue;
+      &:hover {
+        outline: 1px solid @blue;
+      }
+    }
+  }
+  .matrix-item__edit,
+  .matrix-item__delete {
+    width: 15px;
+    height: 15px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    margin-left: 2px;
+    &:hover {
+      background: white !important;
+      color: black;
+    }
+  }
+
+  .matrix-item__edit {
+    color: black;
   }
 
 }

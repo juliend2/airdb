@@ -1,5 +1,6 @@
 var fieldTypes = require('./constants.js').fieldTypes;
 const EisenhowerMatrix = require('./eisenhower_matrix.jsx').EisenhowerMatrix;
+const ItemForm = require('./item_form.jsx').ItemForm;
 var updateQueryString = require('./lib/helpers.js').updateQueryString;
 var _ = require('lodash');
 var React = require('react');
@@ -9,7 +10,6 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props);
-    //console.log('Table constructor', this.props.tableName, this.props.tableRows);
     this.state = {
       tableName: this.props.tableName,
       viewType: this.props.viewType,
@@ -23,7 +23,10 @@ class Table extends React.Component {
       displayAddColumn: false,
       isView: this.props.isView,
       editingTableName: false,
-      tableExists: true // by default, we assume it exists, unless we provide a contrary value
+      editingTableRow: {},
+      editingTableRowID: null,
+      tableExists: true, // by default, we assume it exists, unless we provide a contrary value
+      formIsVisible: false
     };
     window.addEventListener('copy', this.handleCopy.bind(this), false);
   }
@@ -219,7 +222,6 @@ class Table extends React.Component {
   handleStartEditingColumn(e) {
     e.preventDefault();
     var columnName = $(e.target).data('colname');
-    // console.log('columnName', columnName);
     this.setState({editingCol: columnName}, (row) => {
       // console.log('row', row, this.state.editingCol);
     });
@@ -228,7 +230,6 @@ class Table extends React.Component {
   handleStopEditingColumn(e) {
     e.preventDefault();
     var editingCol = this.state.editingCol;
-    // console.log('editingCol', editingCol);
     var newColumnName = $(e.target).val();
     this.setState({editingCol: null}, (row) => {
       $.post('/?action=ajax_edit_col&table='+this.state.tableName, {
@@ -257,7 +258,6 @@ class Table extends React.Component {
     e.preventDefault();
     e.stopPropagation();
     var cell = e.target;
-    console.log('handleSelectCell', cell);
     this.setState({
       currentRowId: cell.dataset.rowid,
       currentColName: cell.dataset.colname
@@ -283,6 +283,21 @@ class Table extends React.Component {
         debugger;
       }
     }
+  }
+
+  handleEditRow(e) {
+    e.preventDefault();
+    const tableRow = _.find(this.state.tableRows, (row)=>{
+      //console.log('find', row.id, e.target.dataset.rowid, row.id == e.target.dataset.rowid);
+      return row.id == e.target.dataset.rowid;
+    });
+    console.log('tableRow', tableRow);
+
+    this.setState({
+      editingTableRow: tableRow,
+      editingTableRowID: e.target.dataset.rowid,
+      formIsVisible: true
+    });
   }
 
   /*
@@ -332,7 +347,6 @@ class Table extends React.Component {
     var value = e.target.value;
     var code = e.which || e.keyCode;
     if (code == 13) { // ENTER
-      console.log('handleTableNameKeyUp');
       this.setState({
         editingTableName: false
       });
@@ -357,12 +371,11 @@ class Table extends React.Component {
   }
 
   anotherViewType(viewType) {
-    console.log('anotherViewType');
     switch (viewType) {
       case 'eisenhower-matrix':
-        console.log('anotherViewType: eisenhower-matrix');
-        return <EisenhowerMatrix tableName={this.state.tableName} tableRows={this.state.tableRows}
-                  tableColumns={this.state.tableColumns} viewType={this.state.viewType} isView={this.state.viewType} handleRemoveRow={this.handleRemoveRow} />;
+        return <EisenhowerMatrix parent={this} tableName={this.state.tableName} tableRows={this.state.tableRows}
+          tableColumns={this.state.tableColumns} viewType={this.state.viewType} isView={this.state.viewType}
+          handleRemoveRow={this.handleRemoveRow} handleEditRow={this.handleEditRow} />;
       default:
         return <p>The '{viewType}' view type is not implemented.</p>;
     }
@@ -372,9 +385,12 @@ class Table extends React.Component {
     var j = 0;
     var k = 0;
     var viewTypes = [
-      {name: 'Table', slug: 'table'},
-      {name: 'Eisenhower Matrix', slug: 'eisenhower-matrix'}
+      {name: 'Table', slug: 'table'}
     ];
+    const tableColumnNames = this.state.tableColumns.map(function(column){ return column.name; });
+    if (tableColumnNames.includes('is_important') && tableColumnNames.includes('is_urgent') && tableColumnNames.includes('task_title')) {
+      viewTypes.push({name: 'Eisenhower Matrix', slug: 'eisenhower-matrix'});
+    }
     return (
       <div>
         {this.state.tableExists ?
@@ -521,7 +537,16 @@ class Table extends React.Component {
             <a href="#" onClick={this.handleAddRow.bind(this)}>Add a Row</a>
           }
         </div>
-        : <p className="error">That table doesn't exist.</p>}</div>
+        : <p className="error">That table doesn't exist.</p>
+        }
+
+        <ItemForm
+          id={this.state.editingTableRowID}
+          tableColumns={this.state.tableColumns}
+          tableRow={this.state.editingTableRow}
+          isVisible={this.state.formIsVisible}
+          mode='edit' />
+      </div>
     );
   }
 }

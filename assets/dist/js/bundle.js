@@ -22420,6 +22420,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var fieldTypes = __webpack_require__(185).fieldTypes;
 var EisenhowerMatrix = __webpack_require__(197).EisenhowerMatrix;
+var ItemForm = __webpack_require__(198).ItemForm;
 var updateQueryString = __webpack_require__(186).updateQueryString;
 var _ = __webpack_require__(187);
 var React = __webpack_require__(24);
@@ -22431,7 +22432,6 @@ var Table = function (_React$Component) {
   function Table(props) {
     _classCallCheck(this, Table);
 
-    //console.log('Table constructor', this.props.tableName, this.props.tableRows);
     var _this = _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
 
     _this.state = {
@@ -22447,7 +22447,10 @@ var Table = function (_React$Component) {
       displayAddColumn: false,
       isView: _this.props.isView,
       editingTableName: false,
-      tableExists: true // by default, we assume it exists, unless we provide a contrary value
+      editingTableRow: {},
+      editingTableRowID: null,
+      tableExists: true, // by default, we assume it exists, unless we provide a contrary value
+      formIsVisible: false
     };
     window.addEventListener('copy', _this.handleCopy.bind(_this), false);
     return _this;
@@ -22668,7 +22671,6 @@ var Table = function (_React$Component) {
     value: function handleStartEditingColumn(e) {
       e.preventDefault();
       var columnName = $(e.target).data('colname');
-      // console.log('columnName', columnName);
       this.setState({ editingCol: columnName }, function (row) {
         // console.log('row', row, this.state.editingCol);
       });
@@ -22680,7 +22682,6 @@ var Table = function (_React$Component) {
 
       e.preventDefault();
       var editingCol = this.state.editingCol;
-      // console.log('editingCol', editingCol);
       var newColumnName = $(e.target).val();
       this.setState({ editingCol: null }, function (row) {
         $.post('/?action=ajax_edit_col&table=' + _this8.state.tableName, {
@@ -22710,7 +22711,6 @@ var Table = function (_React$Component) {
       e.preventDefault();
       e.stopPropagation();
       var cell = e.target;
-      console.log('handleSelectCell', cell);
       this.setState({
         currentRowId: cell.dataset.rowid,
         currentColName: cell.dataset.colname
@@ -22739,6 +22739,22 @@ var Table = function (_React$Component) {
           debugger;
         }
       }
+    }
+  }, {
+    key: 'handleEditRow',
+    value: function handleEditRow(e) {
+      e.preventDefault();
+      var tableRow = _.find(this.state.tableRows, function (row) {
+        //console.log('find', row.id, e.target.dataset.rowid, row.id == e.target.dataset.rowid);
+        return row.id == e.target.dataset.rowid;
+      });
+      console.log('tableRow', tableRow);
+
+      this.setState({
+        editingTableRow: tableRow,
+        editingTableRowID: e.target.dataset.rowid,
+        formIsVisible: true
+      });
     }
 
     /*
@@ -22797,7 +22813,6 @@ var Table = function (_React$Component) {
       var code = e.which || e.keyCode;
       if (code == 13) {
         // ENTER
-        console.log('handleTableNameKeyUp');
         this.setState({
           editingTableName: false
         });
@@ -22824,12 +22839,11 @@ var Table = function (_React$Component) {
   }, {
     key: 'anotherViewType',
     value: function anotherViewType(viewType) {
-      console.log('anotherViewType');
       switch (viewType) {
         case 'eisenhower-matrix':
-          console.log('anotherViewType: eisenhower-matrix');
-          return React.createElement(EisenhowerMatrix, { tableName: this.state.tableName, tableRows: this.state.tableRows,
-            tableColumns: this.state.tableColumns, viewType: this.state.viewType, isView: this.state.viewType, handleRemoveRow: this.handleRemoveRow });
+          return React.createElement(EisenhowerMatrix, { parent: this, tableName: this.state.tableName, tableRows: this.state.tableRows,
+            tableColumns: this.state.tableColumns, viewType: this.state.viewType, isView: this.state.viewType,
+            handleRemoveRow: this.handleRemoveRow, handleEditRow: this.handleEditRow });
         default:
           return React.createElement(
             'p',
@@ -22847,7 +22861,13 @@ var Table = function (_React$Component) {
 
       var j = 0;
       var k = 0;
-      var viewTypes = [{ name: 'Table', slug: 'table' }, { name: 'Eisenhower Matrix', slug: 'eisenhower-matrix' }];
+      var viewTypes = [{ name: 'Table', slug: 'table' }];
+      var tableColumnNames = this.state.tableColumns.map(function (column) {
+        return column.name;
+      });
+      if (tableColumnNames.includes('is_important') && tableColumnNames.includes('is_urgent') && tableColumnNames.includes('task_title')) {
+        viewTypes.push({ name: 'Eisenhower Matrix', slug: 'eisenhower-matrix' });
+      }
       return React.createElement(
         'div',
         null,
@@ -23078,7 +23098,13 @@ var Table = function (_React$Component) {
           'p',
           { className: 'error' },
           'That table doesn\'t exist.'
-        )
+        ),
+        React.createElement(ItemForm, {
+          id: this.state.editingTableRowID,
+          tableColumns: this.state.tableColumns,
+          tableRow: this.state.editingTableRow,
+          isVisible: this.state.formIsVisible,
+          mode: 'edit' })
       );
     }
   }]);
@@ -53301,7 +53327,8 @@ var MatrixItem = function (_React$Component) {
       isImportant: _this.props.isImportant,
       isUrgent: _this.props.isUrgent,
       tableName: _this.props.tableName,
-      handleRemoveRow: _this.props.handleRemoveRow
+      handleRemoveRow: _this.props.handleRemoveRow,
+      handleEditRow: _this.props.handleEditRow
     };
     return _this;
   }
@@ -53312,16 +53339,40 @@ var MatrixItem = function (_React$Component) {
       this.state.handleRemoveRow.apply(this.state.parent, [e]);
     }
   }, {
+    key: 'handleEdit',
+    value: function handleEdit(e) {
+      this.state.handleEditRow.apply(this.state.parent.state.parent, [e]);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         'div',
         { className: 'matrix-item' },
-        this.state.title,
+        React.createElement(
+          'span',
+          { className: 'matrix-item__text' },
+          this.state.title
+        ),
         React.createElement(
           'a',
-          { href: '#', 'data-rowid': this.state.id, onClick: this.handleRemove.bind(this) },
-          'Delete'
+          {
+            title: 'Modify',
+            className: 'matrix-item__edit',
+            href: '#',
+            'data-rowid': this.state.id,
+            onClick: this.handleEdit.bind(this) },
+          '\u270E'
+        ),
+        React.createElement(
+          'a',
+          {
+            title: 'Delete',
+            className: 'matrix-item__delete',
+            href: '#',
+            'data-rowid': this.state.id,
+            onClick: this.handleRemove.bind(this) },
+          '\xD7'
         )
       );
     }
@@ -53338,14 +53389,15 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
 
     var _this2 = _possibleConstructorReturn(this, (EisenhowerMatrix.__proto__ || Object.getPrototypeOf(EisenhowerMatrix)).call(this, props));
 
-    console.log('EisenhowerMatrix');
     _this2.state = {
+      parent: _this2.props.parent,
       tableName: _this2.props.tableName,
       tableRows: _this2.props.tableRows,
       tableColumns: _this2.props.tableColumns,
       viewType: _this2.props.viewType,
       isView: _this2.props.isView,
-      handleRemoveRow: _this2.props.handleRemoveRow
+      handleRemoveRow: _this2.props.handleRemoveRow,
+      handleEditRow: _this2.props.handleEditRow
     };
     return _this2;
   }
@@ -53362,7 +53414,7 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
         return React.createElement(MatrixItem, {
           parent: _this3, key: index, id: row.id, title: row.task_title, tableName: _this3.state.tableName,
           isImportant: toBool(row.is_important), isUrgent: toBool(row.is_urgent),
-          handleRemoveRow: _this3.state.handleRemoveRow });
+          handleRemoveRow: _this3.state.handleRemoveRow, handleEditRow: _this3.state.handleEditRow });
       };
       return React.createElement(
         'div',
@@ -53419,12 +53471,14 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
 }(React.Component);
 
 EisenhowerMatrix.propType = {
+  parent: React.PropTypes.object,
   tableName: React.PropTypes.string,
   tableRows: React.PropTypes.array,
   tableColumns: React.PropTypes.array,
   isView: React.PropTypes.bool,
   viewType: React.PropTypes.string,
-  handleRemoveRow: React.PropTypes.func
+  handleRemoveRow: React.PropTypes.func,
+  handleEditRow: React.PropTypes.func
 };
 
 MatrixItem.propType = {
@@ -53434,10 +53488,103 @@ MatrixItem.propType = {
   title: React.PropTypes.string,
   isImportant: React.PropTypes.bool,
   isUrgent: React.PropTypes.bool,
-  handleRemoveRow: React.PropTypes.func
+  handleRemoveRow: React.PropTypes.func,
+  handleEditRow: React.PropTypes.func
 };
 
 window.EisenhowerMatrix = EisenhowerMatrix;
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(24);
+var _ = __webpack_require__(187);
+
+var ItemForm = exports.ItemForm = function (_React$Component) {
+  _inherits(ItemForm, _React$Component);
+
+  function ItemForm(props) {
+    _classCallCheck(this, ItemForm);
+
+    var _this = _possibleConstructorReturn(this, (ItemForm.__proto__ || Object.getPrototypeOf(ItemForm)).call(this, props));
+
+    _this.state = {
+      id: _this.props.id,
+      //tableName: this.props.tableName,
+      tableRow: _this.props.tableRow,
+      mode: _this.props.mode, // 'edit' or 'new'
+      tableColumns: _this.props.tableColumns,
+      isVisible: _this.props.isVisible
+    };
+    return _this;
+  }
+
+  _createClass(ItemForm, [{
+    key: 'handleSubmit',
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      console.log('submit!');
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return React.createElement(
+        'div',
+        {
+          className: 'item-form-container',
+          style: { display: this.props.isVisible ? 'block' : 'none' },
+          'data-id': this.state.id },
+        React.createElement(
+          'form',
+          { action: '#', className: 'item-form', onSubmit: this.handleSubmit.bind(this) },
+          this.state.tableColumns.map(function (col, index) {
+            console.log(_this2.state.tableRow, _this2.props.tableRow, col);
+            if (col.name == 'id') {
+              return React.createElement('input', { key: index, type: 'hidden', name: 'id' });
+            } else {
+              return React.createElement(
+                'p',
+                { key: index },
+                col.name,
+                ' : ',
+                _this2.props.tableRow[col.name]
+              );
+            }
+          }),
+          React.createElement('input', { type: 'submit', value: this.state.mode == 'edit' ? 'Update' : 'Create', name: 'submit' })
+        )
+      );
+    }
+  }]);
+
+  return ItemForm;
+}(React.Component);
+
+ItemForm.propType = {
+  mode: React.PropTypes.string,
+  tableColumns: React.PropTypes.array,
+  isVisible: React.PropTypes.bool
+};
+
+window.ItemForm = ItemForm;
 
 /***/ })
 /******/ ]);
