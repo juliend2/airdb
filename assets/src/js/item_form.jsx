@@ -16,7 +16,7 @@ export class ItemForm extends React.Component {
     };
     this.fieldTypes = {
       'bool': 'checkbox',
-      'string': 'text',
+      'text': 'text',
       'float': 'number',
       'INTEGER': 'number',
       'datetime': 'datetime-local'
@@ -42,17 +42,19 @@ export class ItemForm extends React.Component {
         <a href="#" className="item-form__close" onClick={this.handleClose.bind(this)}>×</a>
         <form action="#" className="item-form__form" onSubmit={this.handleSubmit.bind(this)}>
           {this.state.tableColumns.map((col, index)=>{
-            console.log(this.state.tableRow, this.props.tableRow, col);
+            //console.log(this.state.tableRow, this.props.tableRow, col);
             if (col.name == 'id') {
               return <input key={index} type="hidden" name="id" />;
             } else {
               switch (col.type) {
               case 'bool':
                 return (
-                  <p key={index}>
-                    {col.name} :
+                  <p className="item-field" key={index}>
+                    <label className="item-field__label" htmlFor={"field_"+col.name}>{col.name}:</label>
                     <input
                       name={col.name}
+                      id={"field_"+col.name}
+                      className="item-field__input"
                       type={this.fieldTypes[col.type]}
                       value={this.props.tableRow[col.name] ? 'on' : 'off'}
                       checked={this.props.tableRow[col.name] && parseInt(this.props.tableRow[col.name], 10) > 0}
@@ -62,13 +64,15 @@ export class ItemForm extends React.Component {
                 );
               default:
                 return (
-                  <p key={index}>
-                    {col.name} :
+                  <p className="item-field" key={index}>
+                    <label className="item-field__label" htmlFor={"field_"+col.name}>{col.name}:</label>
                     <input
                       name={col.name}
+                      id={"field_"+col.name}
+                      className="item-field__input"
                       type={this.fieldTypes[col.type]}
                       value={this.props.tableRow[col.name]}
-                      onChange={this.props.handleFormValueChange.bind(this)}
+                      onChange={this.props.handleFormValueChange.bind(this.props.parent)}
                       />
                   </p>
                 );

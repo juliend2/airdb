@@ -112,7 +112,11 @@ class Table extends React.Component {
   handleBooleanChange(e) {
     var rowID = $(e.target).closest('td').data('rowid');
     var colName = $(e.target).closest('td').data('colname');
-    var newValue = (e.target.value == 'on' ? 1 : 0);
+    this.changeBooleanValue(rowID, colName, e.target.value == 'on' ? 1 : 0);
+  }
+
+  changeBooleanValue(rowID, colName, newValue) {
+    console.log('changeBooleanValue', rowID, colName, newValue);
     var newValue = newValue ? 0 : 1; // invert
     if (!this.state.isView) {
       this.setState({
@@ -551,7 +555,7 @@ class Table extends React.Component {
               formIsVisible: visible
             });
           }}
-          handleFormValueChange={(e)=>{
+          handleBooleanChange={(e)=>{
             var val = e.target.value;
             if (e.target.type == 'checkbox') {
               console.log('type', e.target.type);
@@ -563,7 +567,15 @@ class Table extends React.Component {
               [e.target.name]: val
             });
           }}
+          handleFormValueChange={(e)=>{
+            var val = e.target.value;
+            console.log('name', e.target.name, 'value', val);
+            this.setState({
+              [e.target.name]: val
+            });
+          }}
           mode='edit' />
+
       </div>
     );
   }

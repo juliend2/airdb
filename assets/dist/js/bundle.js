@@ -22548,11 +22548,16 @@ var Table = function (_React$Component) {
   }, {
     key: 'handleBooleanChange',
     value: function handleBooleanChange(e) {
-      var _this4 = this;
-
       var rowID = $(e.target).closest('td').data('rowid');
       var colName = $(e.target).closest('td').data('colname');
-      var newValue = e.target.value == 'on' ? 1 : 0;
+      this.changeBooleanValue(rowID, colName, e.target.value == 'on' ? 1 : 0);
+    }
+  }, {
+    key: 'changeBooleanValue',
+    value: function changeBooleanValue(rowID, colName, newValue) {
+      var _this4 = this;
+
+      console.log('changeBooleanValue', rowID, colName, newValue);
       var newValue = newValue ? 0 : 1; // invert
       if (!this.state.isView) {
         this.setState({
@@ -23112,13 +23117,18 @@ var Table = function (_React$Component) {
               formIsVisible: visible
             });
           },
-          handleFormValueChange: function handleFormValueChange(e) {
+          handleBooleanChange: function handleBooleanChange(e) {
             var val = e.target.value;
             if (e.target.type == 'checkbox') {
               console.log('type', e.target.type);
               val = e.target.value == 'on' ? 1 : 0;
               val = val ? 0 : 1; // invert
             }
+            console.log('name', e.target.name, 'value', val);
+            _this11.setState(_defineProperty({}, e.target.name, val));
+          },
+          handleFormValueChange: function handleFormValueChange(e) {
+            var val = e.target.value;
             console.log('name', e.target.name, 'value', val);
             _this11.setState(_defineProperty({}, e.target.name, val));
           },
@@ -53329,6 +53339,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = __webpack_require__(24);
 var _ = __webpack_require__(187);
+var TableRow = __webpack_require__(199).TableRow;
+
+console.log('TableRow', TableRow);
 
 var MatrixItem = function (_React$Component) {
   _inherits(MatrixItem, _React$Component);
@@ -53431,7 +53444,7 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
       var item = function item(index, row) {
         return React.createElement(MatrixItem, {
           parent: _this3, key: index, id: row.id, title: row.task_title, tableName: _this3.state.tableName,
-          isImportant: toBool(row.is_important), isUrgent: toBool(row.is_urgent),
+          isImportant: row.isImportant(), isUrgent: row.isUrgent(),
           handleRemoveRow: _this3.state.handleRemoveRow, handleEditRow: _this3.state.handleEditRow });
       };
       return React.createElement(
@@ -53441,7 +53454,8 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
           'div',
           { className: 'eisenhower-cell  eisenhower-cell__important-urgent' },
           _.map(this.state.tableRows, function (row, index) {
-            if (row.is_important && row.is_urgent) {
+            var row = new TableRow(row);
+            if (row.isImportant() && row.isUrgent()) {
               return item(index, row);
             } else {
               return null;
@@ -53452,7 +53466,8 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
           'div',
           { className: 'eisenhower-cell  eisenhower-cell__important-noturgent' },
           _.map(this.state.tableRows, function (row, index) {
-            if (row.is_important && !row.is_urgent) {
+            var row = new TableRow(row);
+            if (row.isImportant() && !row.isUrgent()) {
               return item(index, row);
             } else {
               return null;
@@ -53463,7 +53478,8 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
           'div',
           { className: 'eisenhower-cell  eisenhower-cell__notimportant-urgent' },
           _.map(this.state.tableRows, function (row, index) {
-            if (!row.is_important && row.is_urgent) {
+            var row = new TableRow(row);
+            if (!row.isImportant() && row.isUrgent()) {
               return item(index, row);
             } else {
               return null;
@@ -53474,7 +53490,9 @@ var EisenhowerMatrix = exports.EisenhowerMatrix = function (_React$Component2) {
           'div',
           { className: 'eisenhower-cell  eisenhower-cell__notimportant-noturgent' },
           _.map(this.state.tableRows, function (row, index) {
-            if (!row.is_important && !row.is_urgent) {
+            var row = new TableRow(row);
+            console.log('row', row);
+            if (!row.isImportant() && !row.isUrgent()) {
               return item(index, row);
             } else {
               return null;
@@ -53554,7 +53572,7 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
     };
     _this.fieldTypes = {
       'bool': 'checkbox',
-      'string': 'text',
+      'text': 'text',
       'float': 'number',
       'INTEGER': 'number',
       'datetime': 'datetime-local'
@@ -53594,7 +53612,7 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
           'form',
           { action: '#', className: 'item-form__form', onSubmit: this.handleSubmit.bind(this) },
           this.state.tableColumns.map(function (col, index) {
-            console.log(_this2.state.tableRow, _this2.props.tableRow, col);
+            //console.log(this.state.tableRow, this.props.tableRow, col);
             if (col.name == 'id') {
               return React.createElement('input', { key: index, type: 'hidden', name: 'id' });
             } else {
@@ -53602,11 +53620,17 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
                 case 'bool':
                   return React.createElement(
                     'p',
-                    { key: index },
-                    col.name,
-                    ' :',
+                    { className: 'item-field', key: index },
+                    React.createElement(
+                      'label',
+                      { className: 'item-field__label', htmlFor: "field_" + col.name },
+                      col.name,
+                      ':'
+                    ),
                     React.createElement('input', {
                       name: col.name,
+                      id: "field_" + col.name,
+                      className: 'item-field__input',
                       type: _this2.fieldTypes[col.type],
                       value: _this2.props.tableRow[col.name] ? 'on' : 'off',
                       checked: _this2.props.tableRow[col.name] && parseInt(_this2.props.tableRow[col.name], 10) > 0,
@@ -53616,14 +53640,20 @@ var ItemForm = exports.ItemForm = function (_React$Component) {
                 default:
                   return React.createElement(
                     'p',
-                    { key: index },
-                    col.name,
-                    ' :',
+                    { className: 'item-field', key: index },
+                    React.createElement(
+                      'label',
+                      { className: 'item-field__label', htmlFor: "field_" + col.name },
+                      col.name,
+                      ':'
+                    ),
                     React.createElement('input', {
                       name: col.name,
+                      id: "field_" + col.name,
+                      className: 'item-field__input',
                       type: _this2.fieldTypes[col.type],
                       value: _this2.props.tableRow[col.name],
-                      onChange: _this2.props.handleFormValueChange.bind(_this2)
+                      onChange: _this2.props.handleFormValueChange.bind(_this2.props.parent)
                     })
                   );
               }
@@ -53645,6 +53675,49 @@ ItemForm.propType = {
 };
 
 window.ItemForm = ItemForm;
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TableRow = exports.TableRow = function () {
+  function TableRow(row) {
+    _classCallCheck(this, TableRow);
+
+    this.row = row;
+    Object.assign(this, row);
+  }
+
+  _createClass(TableRow, [{
+    key: 'isUrgent',
+    value: function isUrgent() {
+      return this._isSomething('is_urgent');
+    }
+  }, {
+    key: 'isImportant',
+    value: function isImportant() {
+      return this._isSomething('is_important');
+    }
+  }, {
+    key: '_isSomething',
+    value: function _isSomething(prop) {
+      return this.hasOwnProperty(prop) ? !!parseInt(this[prop], 10) : null;
+    }
+  }]);
+
+  return TableRow;
+}();
 
 /***/ })
 /******/ ]);

@@ -157,6 +157,27 @@ body {
     line-height: 3rem;
   }
 
+  .item-field {
+    display: flex;
+    .item-field__label {
+      width: 40%;
+      max-width: 200px;
+    }
+    .item-field__input {
+      width: 60%;
+      &[type='text'] {
+        display: block;
+        padding: 4px;
+        border: 1px solid #ccc;
+        line-height: 1.2em;
+        &:focus {
+          outline: none;
+          border: 1px solid black;
+        }
+      }
+    }
+  }
+
 .eisenhower-matrix {
   @red: #FF3636;
   @green: #9BFF36;

@@ -1,5 +1,8 @@
 var React = require('react');
 var _ = require('lodash');
+const TableRow = require('./table_row.js').TableRow;
+
+console.log('TableRow', TableRow);
 
 class MatrixItem extends React.Component {
 
@@ -68,13 +71,14 @@ export class EisenhowerMatrix extends React.Component {
     const item = (index, row) => {
       return <MatrixItem
         parent={this} key={index} id={row.id} title={row.task_title} tableName={this.state.tableName}
-        isImportant={toBool(row.is_important)} isUrgent={toBool(row.is_urgent)}
+        isImportant={row.isImportant()} isUrgent={row.isUrgent()}
         handleRemoveRow={this.state.handleRemoveRow} handleEditRow={this.state.handleEditRow} />;
     };
     return (<div className="eisenhower-matrix">
       <div className="eisenhower-cell  eisenhower-cell__important-urgent">
         {_.map(this.state.tableRows, (row, index)=> {
-          if (row.is_important && row.is_urgent) {
+          var row = new TableRow(row);
+          if (row.isImportant() && row.isUrgent()) {
             return item(index, row);
           } else {
             return null;
@@ -83,7 +87,8 @@ export class EisenhowerMatrix extends React.Component {
       </div>
       <div className="eisenhower-cell  eisenhower-cell__important-noturgent">
         {_.map(this.state.tableRows, (row, index)=> {
-          if (row.is_important && !row.is_urgent) {
+          var row = new TableRow(row);
+          if (row.isImportant() && !row.isUrgent()) {
             return item(index, row);
           } else {
             return null;
@@ -92,7 +97,8 @@ export class EisenhowerMatrix extends React.Component {
       </div>
       <div className="eisenhower-cell  eisenhower-cell__notimportant-urgent">
         {_.map(this.state.tableRows, (row, index)=> {
-          if (!row.is_important && row.is_urgent) {
+          var row = new TableRow(row);
+          if (!row.isImportant() && row.isUrgent()) {
             return item(index, row);
           } else {
             return null;
@@ -101,7 +107,9 @@ export class EisenhowerMatrix extends React.Component {
       </div>
       <div className="eisenhower-cell  eisenhower-cell__notimportant-noturgent">
         {_.map(this.state.tableRows, (row, index)=> {
-          if (!row.is_important && !row.is_urgent) {
+          var row = new TableRow(row);
+          console.log('row', row);
+          if (!row.isImportant() && !row.isUrgent()) {
             return item(index, row);
           } else {
             return null;
