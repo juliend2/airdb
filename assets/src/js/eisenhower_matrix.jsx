@@ -2,8 +2,6 @@ var React = require('react');
 var _ = require('lodash');
 const TableRow = require('./table_row.js').TableRow;
 
-console.log('TableRow', TableRow);
-
 class MatrixItem extends React.Component {
 
   constructor(props) {
@@ -14,6 +12,7 @@ class MatrixItem extends React.Component {
       title: this.props.title,
       isImportant: this.props.isImportant,
       isUrgent: this.props.isUrgent,
+      gistURL: this.props.gistURL,
       tableName: this.props.tableName,
       handleRemoveRow: this.props.handleRemoveRow,
       handleEditRow: this.props.handleEditRow
@@ -31,6 +30,9 @@ class MatrixItem extends React.Component {
   render() {
     return <div className="matrix-item">
       <span className="matrix-item__text">{this.state.title}</span>
+      {
+        this.state.gistURL ? (<a href={this.state.gistURL} target="_blank" title="Github Gist" className="github-icon"><img src="/assets/dist/img/GitHub-Mark-64px.png" /></a>) : null
+      }
       <a
         title="Modify"
         className="matrix-item__edit"
@@ -71,13 +73,13 @@ export class EisenhowerMatrix extends React.Component {
     const item = (index, row) => {
       return <MatrixItem
         parent={this} key={index} id={row.id} title={row.task_title} tableName={this.state.tableName}
-        isImportant={row.isImportant()} isUrgent={row.isUrgent()}
+        isImportant={row.isImportant()} isUrgent={row.isUrgent()} gistURL={row.githubGist()}
         handleRemoveRow={this.state.handleRemoveRow} handleEditRow={this.state.handleEditRow} />;
     };
+    const tableRows = _.map(this.state.tableRows, (row)=>{ return new TableRow(row); });
     return (<div className="eisenhower-matrix">
       <div className="eisenhower-cell  eisenhower-cell__important-urgent">
-        {_.map(this.state.tableRows, (row, index)=> {
-          var row = new TableRow(row);
+        {_.map(tableRows, (row, index)=> {
           if (row.isImportant() && row.isUrgent()) {
             return item(index, row);
           } else {
@@ -86,8 +88,7 @@ export class EisenhowerMatrix extends React.Component {
         })}
       </div>
       <div className="eisenhower-cell  eisenhower-cell__important-noturgent">
-        {_.map(this.state.tableRows, (row, index)=> {
-          var row = new TableRow(row);
+        {_.map(tableRows, (row, index)=> {
           if (row.isImportant() && !row.isUrgent()) {
             return item(index, row);
           } else {
@@ -96,8 +97,7 @@ export class EisenhowerMatrix extends React.Component {
         })}
       </div>
       <div className="eisenhower-cell  eisenhower-cell__notimportant-urgent">
-        {_.map(this.state.tableRows, (row, index)=> {
-          var row = new TableRow(row);
+        {_.map(tableRows, (row, index)=> {
           if (!row.isImportant() && row.isUrgent()) {
             return item(index, row);
           } else {
@@ -106,9 +106,7 @@ export class EisenhowerMatrix extends React.Component {
         })}
       </div>
       <div className="eisenhower-cell  eisenhower-cell__notimportant-noturgent">
-        {_.map(this.state.tableRows, (row, index)=> {
-          var row = new TableRow(row);
-          console.log('row', row);
+        {_.map(tableRows, (row, index)=> {
           if (!row.isImportant() && !row.isUrgent()) {
             return item(index, row);
           } else {
@@ -138,6 +136,7 @@ MatrixItem.propType = {
   title: React.PropTypes.string,
   isImportant: React.PropTypes.bool,
   isUrgent: React.PropTypes.bool,
+  gistURL: React.PropTypes.string,
   handleRemoveRow: React.PropTypes.func,
   handleEditRow: React.PropTypes.func
 };

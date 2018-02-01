@@ -3,5 +3,6 @@ export const fieldTypes = [
  {name: 'Float', slug: 'real'},
  {name: 'Datetime', slug: 'datetime'},
  {name: 'Integer', slug: 'int'},
- {name: 'Boolean', slug: 'bool'}
+ {name: 'Boolean', slug: 'bool'},
+ {name: 'Gist', slug: 'gist'}
 ];

@@ -515,6 +515,10 @@ body {
 .eisenhower-matrix .matrix-item__text {
   width: calc(100% - 15px);
 }
+.eisenhower-matrix .github-icon img {
+  width: 1.3rem;
+  height: 1.3rem;
+}
 .eisenhower-matrix .eisenhower-cell__important-urgent {
   background: #FF3636;
 }

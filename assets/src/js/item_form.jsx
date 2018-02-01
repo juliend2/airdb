@@ -1,5 +1,6 @@
 var React = require('react');
 var _ = require('lodash');
+var $ = require('jquery');
 
 export class ItemForm extends React.Component {
   constructor(props) {
@@ -33,6 +34,12 @@ export class ItemForm extends React.Component {
     this.state.handleFormVisibilityChange(false);
   }
 
+  handleBooleanChange(e) {
+    console.log('target', e.target);
+    var rowID = $(e.target).closest('td').data('');
+    this.props.parent.changeBooleanValue(rowID, colName, e.target.value == 'on' ? 1 : 0);
+  }
+
   render() {
     return this.props.isVisible ? (
       <div
@@ -42,12 +49,12 @@ export class ItemForm extends React.Component {
         <a href="#" className="item-form__close" onClick={this.handleClose.bind(this)}>×</a>
         <form action="#" className="item-form__form" onSubmit={this.handleSubmit.bind(this)}>
           {this.state.tableColumns.map((col, index)=>{
-            //console.log(this.state.tableRow, this.props.tableRow, col);
             if (col.name == 'id') {
               return <input key={index} type="hidden" name="id" />;
             } else {
               switch (col.type) {
               case 'bool':
+                console.log('tableRow', this.props.tableRow[col.name], col.name);
                 return (
                   <p className="item-field" key={index}>
                     <label className="item-field__label" htmlFor={"field_"+col.name}>{col.name}:</label>
@@ -58,7 +65,7 @@ export class ItemForm extends React.Component {
                       type={this.fieldTypes[col.type]}
                       value={this.props.tableRow[col.name] ? 'on' : 'off'}
                       checked={this.props.tableRow[col.name] && parseInt(this.props.tableRow[col.name], 10) > 0}
-                      onChange={this.props.parent.handleBooleanChange.bind(this.props.parent)}
+                      onChange={this.handleBooleanChange.bind(this)}
                       />
                   </p>
                 );

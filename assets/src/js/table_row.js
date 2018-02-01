@@ -13,6 +13,10 @@ export class TableRow {
     return this._isSomething('is_important');
   }
 
+  githubGist() {
+    return this.hasOwnProperty('gist_url') ? this.gist_url : null;
+  }
+
   _isSomething(prop) {
     return this.hasOwnProperty(prop) ? !!parseInt(this[prop], 10) : null;
   }
